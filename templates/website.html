@@ -14,6 +14,7 @@
           <p class="subtitle">URL: {{website.website_url}}</p>
           <p class="subtitle">Login: {{website.login}}</p>
           <p class="subtitle">Password: {{website.password}}</p>
+          <p class="subtitle"><a href="/">Go Back</a></p>
 
         </div>
       </div>
@@ -25,22 +26,22 @@
           {% else %}
             <div id="table-header" >
               <div class="website-item-inner">
-                <div class="website-item-child">
+                <div class="project-item-child">
                   <p>Project Name</p>
                 </div>
-                <div class="website-item-child">
+                <div class="project-item-child">
                   <p>Project Type</p>
                 </div>
-                <div class="website-item-child">
+                <div class="project-item-child">
                   <p>Language</p>
                 </div>
-                <div class="website-item-child">
-                  <p>Active?</p>
+                <div id="activate-button" style="text-decoration: underline;">
+                  <p>Run Project</p>
                 </div>
               </div>
             </div>
             {% for project in projects %}
-              {% with name=project.name, type=project.project_type.value, language=project.language.value, is_active=project.on , index=loop.index-1%}
+              {% with name=project.name, type=project.project_type.value, language=project.language.value, is_active=project.on , project_index=loop.index-1 , website_index=index %}
               <div class="website-item"><a href="#" style="text-decoration: none;">{% include "partials/project-item.html" %}</a></div>
               {% endwith %}
               {% if loop.index != projects|length %}
@@ -52,14 +53,17 @@
       </div>
       <div class="outer-button-wrapper">
         <div class="button-wrapper">
-          <button onclick= "window.location.href='/addproject/keywords?index={{index}}';" class="generate-button-side">Add new project (with keywords)</button>
+          <button onclick= "window.location.href='/add/project/keywords?index={{index}}';" class="generate-button-side">New project by keywords</button>
         </div>
         <div class="button-wrapper">
-          <button onclick= "window.location.href='/addproject/titles?index={{index}}';" class="generate-button-side">Add new project (with titles)</button>
+          <button onclick= "window.location.href='/add/project/titles?index={{index}}';" class="generate-button-side">New project by titles</button>
         </div>
         <div class="button-wrapper">
           <button onclick= "window.location.href='/delete?index={{index}}';" class="generate-button-side">Delete Website</button>
         </div>
+        <form action="/save"class="button-wrapper">
+          <input type="submit" class="generate-button-side"value="Save All" />
+        </form>
       </div>
     </div>
   </body>

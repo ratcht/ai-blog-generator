@@ -16,7 +16,7 @@ def generate_text_by_keywords(topic: str, keywords: str, language: str):
 
 
 def generate_text_by_title(title: str, language: str):
-  return generate_text("Write a personal blog with a few short headers on the title " + title+ " in the language: " + language)
+  return generate_text("Write a personal blog with a few short headers on the title " + title+ " in the language: " + language).content
 
 
 def generate_text(content):
@@ -27,4 +27,4 @@ def generate_text(content):
         {"role": "user", "content": content}
       ]
   )
-  return response
+  return response['choices'][0]['message']['content']

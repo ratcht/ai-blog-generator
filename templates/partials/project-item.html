@@ -1,17 +1,19 @@
 <div class="website-item-inner">
-  <div class="website-item-child">
+  <div class="project-item-child">
     <p>{{name}}</p>
   </div>
   
-  <div class="website-item-child">
+  <div class="project-item-child">
     <p>{{type}}</p>
   </div>
 
-  <div class="website-item-child">
+  <div class="project-item-child">
     <p>{{language}}</p>
   </div>
 
-  <div class="website-item-child">
-    <p>{{is_active}}</p>
+  <div id="activate-button">
+    <object><a href="/website/run?web_index={{website_index}}&proj_index={{project_index}}">Run</a></object>
   </div>
 </div>
+
+

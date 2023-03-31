@@ -1,5 +1,5 @@
 #main-title{
-  font-family: 'Roboto';
+  font-family: 'Arial';
   font-size: 3vw;
   text-align: center;
   margin-bottom: 0;
@@ -45,7 +45,7 @@ body{
   margin-bottom: 1%;
   background-color: white;
   text-align: center;
-  font-family: 'Roboto';
+  font-family: 'Arial';
   width:60%;
 }
 
@@ -76,6 +76,16 @@ body{
   text-align: left;
 }
 
+.project-item-child{
+  width:30%;
+  text-align: left;
+}
+
+#activate-button{
+  width:10%;
+  text-align:left;
+}
+
 .outer-button-wrapper{
   display:flex;
   align-items: center;
@@ -87,7 +97,7 @@ body{
   width:80%;
   padding-top: 0.5%;
   padding-bottom: 0.5%;
-  font-family: 'Roboto';
+  font-family: 'Arial';
   font-size: 0.8vw;
   background-color: white;
   color: black;
@@ -110,7 +120,7 @@ body{
   width:7%;
   padding-top: 0.5%;
   padding-bottom: 0.5%;
-  font-family: 'Roboto';
+  font-family: 'Arial';
   font-size: 0.8vw;
   background-color: white;
   color: black;
@@ -129,7 +139,7 @@ hr.solid {
 
 .body-wrapper{
   padding-top:2vw;
-  font-family: Roboto;
+  font-family: Arial;
   text-align: center;
 }
 
@@ -141,7 +151,7 @@ hr.solid {
   display:flex;
   align-items: center;
   justify-content: center;
-  font-family: Roboto;
+  font-family: Arial;
   font-size: 0.9vw;
 }
 

@@ -35,19 +35,20 @@ class Project:
   def create_post_by_keywords(self, topic, keywords):
     self.blog_text = generate_text_by_keywords(topic, keywords, self.language.value)
 
-  def generate_by_titles_periodic(self, website_url, login, password):
-    for title in self.titles:
-      self.create_post_by_title(title)
-      upload_post(self.status_type, self.blog_text, website_url, login, password)
+  def generate_periodic(self, website_url="", login="", password=""):
+    if self.project_type==ProjectType.KEYWORDS:
+      for keyword in self.keywords_dynamic:
+        self.create_post_by_keywords(self.topic, keyword)
+        upload_post(StatusType.OFFLINE, self.blog_text, website_url, login, password)
 
-      time.sleep(self.post_delay)
+        time.sleep(self.post_delay)
 
-  def generate_by_keywords_periodic(self, website_url, login, password):
-    for keyword in self.keywords_dynamic:
-      self.create_post_by_keywords(self.topic, keyword)
-      upload_post(self.status_type, self.blog_text, website_url, login, password)
+    elif self.project_type==ProjectType.TITLES:
+      for title in self.titles:
+        self.create_post_by_title(title)
+        upload_post(self.status_type, self.blog_text, website_url, login, password)
 
-      time.sleep(self.post_delay)
+        time.sleep(self.post_delay)
 
   def jsonify(self):
     return dict(name = self.name, status_type = self.status_type, project_type=self.project_type,post_delay=self.post_delay, language = self.language, blog_text=self.blog_text, on = self.on, topic=self.topic, 

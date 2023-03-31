@@ -19,13 +19,16 @@ def wp_upload(blog_text, website_url, login, password):
   pass
 
 
-def txt_upload(blog_text):
+def txt_upload(blog_text):  
+  script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+  #rel_path = "files/text/saves.json"
+  #abs_file_path = os.path.join(script_dir, rel_path)
   # upload to text document + download
   i = 0
-  while os.path.exists("text/blog%s.txt" %i):
+  while os.path.exists(os.path.join(script_dir, "text/blog%s.txt") %i):
     i += 1
 
-  with open('text/blog%s.txt' %i, 'w') as f:
+  with open(os.path.join(script_dir, "text/blog%s.txt") %i, 'w') as f:
     f.write(blog_text)
 
   

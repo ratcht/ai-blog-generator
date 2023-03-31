@@ -50,7 +50,7 @@ def submit():
 
 
 # add website page and POST request
-@app.route("/addwebsite", methods=["GET", "POST"])
+@app.route("/add/website", methods=["GET", "POST"])
 def add_website():
   global websites
   is_failed = 0
@@ -77,8 +77,26 @@ def website():
   print(websites[int(website_index)].projects)
   return render_template("website.html", website = websites[int(website_index)], projects=websites[int(website_index)].projects, index=int(website_index))
 
+
+# clicked on website item
+@app.route("/website/run")
+def run_project():
+  global websites
+  website_index=int(request.args.get('web_index'))
+  project_index=int(request.args.get('proj_index'))
+
+  url = websites[website_index].website_url
+  login = websites[website_index].login
+  password = websites[website_index].password
+
+  websites[website_index].projects[project_index].generate_periodic()
+
+  print(websites[website_index].projects)
+  return render_template("website.html", website = websites[int(website_index)], projects=websites[int(website_index)].projects, index=int(website_index))
+
+
 # add project
-@app.route("/addproject/keywords", methods=["GET", "POST"])
+@app.route("/add/project/keywords", methods=["GET", "POST"])
 def add_project_keywords():
   global websites
   is_failed = 0
@@ -97,10 +115,10 @@ def add_project_keywords():
 
     websites[website_index].projects.append(new_project)
     print(json.dumps(websites[website_index], cls=ComplexEncoder))
-    return redirect(url_for('add_project_keywords'))
+    return redirect(url_for('website', index=website_index))
   return render_template("create-project-keywords.html", failed=is_failed, index=website_index)
 
-@app.route("/addproject/titles", methods=["GET", "POST"])
+@app.route("/add/project/titles", methods=["GET", "POST"])
 def add_project_title():
   global websites
   is_failed = 0
