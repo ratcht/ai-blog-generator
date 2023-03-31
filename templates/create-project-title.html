@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+
+<head>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js">  </script>
+</head>
+
+<html>
+  <body>
+    <form action="/addwebsite"method="POST" class="body-wrapper">
+      <label for="topic">Project Name:</label><br>
+      <input type="text" id="name" name="name"><br><br>
+      
+      <label for="topic">Topic:</label><br>
+      <input type="text" id="wp_login" name="wp_login"><br><br>
+      <label for="topic">WordPress Password:</label><br>
+      <input type="text" id="wp_password" name="wp_password"><br><br>
+
+      <div" class="button-wrapper">
+        <input type="submit" class="generate-button"value="Add Website!" />
+      </div>
+    </form>
+    {% if failed == 1 %}
+    <p style="margin-left:1%;">One or more fields were typed incorrectly. Please try again.</p>
+    {% endif %}
+  </body>
+</html>
+
+
+<script>
+  $(function() {
+
+    $("#submit").on("click",function(){
+      var website_url = document.getElementById('website_url').value;
+      var wp_login = document.getElementById('wp_login').value;
+      var wp_password = document.getElementById('wp_password').value;
+      var json_data = JSON.stringify({website_url:website_url, wp_login:wp_login, wp_password:wp_password});
+      
+			$.ajax({
+        type: "POST",
+        url: "/create/website",
+        contentType: "application/json",
+        dataType: "JSON",
+        data: json_data,
+        success: function(data, textStatus) {
+          console.log(data);
+
+
+        }
+      });
+		});
+  
+  
+  });
+
+
+</script>

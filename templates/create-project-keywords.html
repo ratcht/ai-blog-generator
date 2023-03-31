@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+
+<head>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js">  </script>
+</head>
+
+<html>
+  <body>
+    <div class="body-wrapper">
+      <form id="create-project" action="/addproject/keywords?index={{index}}" method="POST">
+        <label for="topic">Project Name:</label><br>
+        <input type="text" id="name" name="name"><br><br>
+        
+        Language:<br>
+        <input type="radio" id="english" name="language" value="English" style="width:auto;" checked>
+        <label for="english">English  </label>
+        <input type="radio" id="french" name="language" value="French"style="width:auto;">
+        <label for="french">French  </label>
+        <input type="radio" id="german" name="language" value="German"style="width:auto;">
+        <label for="german">German  </label><br><br>
+
+        <label for="topic">Topic:</label><br>
+        <input type="text" id="topic" name="topic"><br><br>
+        <label for="keywords">Keywords:</label><br>
+      </form>
+      <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea>
+      <div" class="button-wrapper">
+        <button form="create-project" type="submit" class="generate-button">Add Project!</button>
+      </div>
+    </div>
+    
+    
+    {% if failed == 1 %}
+    <p style="margin-left:1%;">One or more fields were typed incorrectly. Please try again.</p>
+    {% endif %}
+  </body>
+</html>
+

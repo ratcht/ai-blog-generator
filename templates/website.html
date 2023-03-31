@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+
+<head>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js">  </script>
+</head>
+
+<html>
+  <body>
+    <div id="body-box">
+      <div class="top-box">
+        <h1 id="main-title">Website: {{website.website_url}}</h1>
+        <div class="subtitles">
+          <p class="subtitle">URL: {{website.website_url}}</p>
+          <p class="subtitle">Login: {{website.login}}</p>
+          <p class="subtitle">Password: {{website.password}}</p>
+
+        </div>
+      </div>
+      
+      <div id="main-section">
+        <div id="#project-list" class="list">
+          {% if projects|length == 0%}
+          <p id="empty-message">You currently have no projects configured</p>
+          {% else %}
+            <div id="table-header" >
+              <div class="website-item-inner">
+                <div class="website-item-child">
+                  <p>Project Name</p>
+                </div>
+                <div class="website-item-child">
+                  <p>Project Type</p>
+                </div>
+                <div class="website-item-child">
+                  <p>Language</p>
+                </div>
+                <div class="website-item-child">
+                  <p>Active?</p>
+                </div>
+              </div>
+            </div>
+            {% for project in projects %}
+              {% with name=project.name, type=project.project_type.value, language=project.language.value, is_active=project.on , index=loop.index-1%}
+              <div class="website-item"><a href="#" style="text-decoration: none;">{% include "partials/project-item.html" %}</a></div>
+              {% endwith %}
+              {% if loop.index != projects|length %}
+              <hr class="solid">
+              {% endif %}
+            {% endfor %}
+          {%endif%}
+        </div>
+      </div>
+      <div class="outer-button-wrapper">
+        <div class="button-wrapper">
+          <button onclick= "window.location.href='/addproject/keywords?index={{index}}';" class="generate-button-side">Add new project (with keywords)</button>
+        </div>
+        <div class="button-wrapper">
+          <button onclick= "window.location.href='/addproject/titles?index={{index}}';" class="generate-button-side">Add new project (with titles)</button>
+        </div>
+        <div class="button-wrapper">
+          <button onclick= "window.location.href='/delete?index={{index}}';" class="generate-button-side">Delete Website</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+

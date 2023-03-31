@@ -1,0 +1,150 @@
+#main-title{
+  font-family: 'Roboto';
+  font-size: 3vw;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+
+
+#empty-message{
+  font-size: 0.9vw;
+}
+
+input {
+  width: 30vw;
+  padding: 4px 4px;
+  margin: 8px 0;
+  box-sizing: border-box;
+
+}
+
+input:focus {
+  border: 3px solid #555;
+}
+
+#keywords{
+  width: 30vw;
+  padding: 4px 4px;
+  margin: 8px 0;
+  font-family:'Arial', sans-serif
+}
+
+body{
+  background-color: #Eeeef7;
+}
+
+#main-section{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list{
+  margin-top:3%;
+  margin-bottom: 1%;
+  background-color: white;
+  text-align: center;
+  font-family: 'Roboto';
+  width:60%;
+}
+
+#project-list .list{
+  margin-top:0 !important;
+}
+
+
+#table-header{
+  padding-left:4%;
+  font-weight: bold;
+}
+
+.website-item{
+  background-color: #fafcff;
+  padding:1%;
+  padding-left:4%;
+}
+
+.website-item-inner{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.website-item-child{
+  width:33.33%;
+  text-align: left;
+}
+
+.outer-button-wrapper{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.generate-button-side{
+  width:80%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  font-family: 'Roboto';
+  font-size: 0.8vw;
+  background-color: white;
+  color: black;
+  border: 2px solid black; /* Green */
+  white-space: normal;
+   word-wrap: break-word;
+}
+
+.generate-button-side:hover{
+  background-color: #fafcff;
+}
+
+.button-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.generate-button{
+  width:7%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  font-family: 'Roboto';
+  font-size: 0.8vw;
+  background-color: white;
+  color: black;
+  border: 2px solid black; /* Green */
+}
+
+.generate-button:hover{
+  background-color: #fafcff;
+}
+
+hr.solid {
+  margin:0;
+  background-color: #fafcff;
+  border-top: 1px solid black;
+}
+
+.body-wrapper{
+  padding-top:2vw;
+  font-family: Roboto;
+  text-align: center;
+}
+
+.top-box{
+  text-align: center;
+}
+
+.subtitles{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Roboto;
+  font-size: 0.9vw;
+}
+
+.subtitle{
+  width:10%;
+}
