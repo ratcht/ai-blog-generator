@@ -11,12 +11,18 @@ api_key = os.environ.get('GPT_API_KEY')
 openai.api_key = api_key
 
 
-def generate_text_by_keywords(topic: str, keywords: str, language: str):
-  return generate_text("Write a personal blog with a few short headers about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The post must be in the language: " + language)
+def generate_text_by_keywords(topic: str, keywords: str, language: str, min_word_count: int):
+  intro_word_count = 0.2*min_word_count
+  body_word_count=0.6*min_word_count
+  conclusion_word_count=0.2*min_word_count
+  blog_intro = generate_text("Write the intro to a personal blog about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must meet the minimum word count: "+intro_word_count)
+  blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must meet the minimum word count: "+body_word_count)
+  blog_conclusion = generate_text("Write the conclusion section of a personal blog, without saying 'in conclusion', for the introduction: '" +blog_intro +"'. The blog body must be about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must meet the minimum word count: "+conclusion_word_count)
 
+  return blog_intro+'\n'+blog_body+'\n'+blog_conclusion
 
 def generate_text_by_title(title: str, language: str):
-  return generate_text("Write a personal blog with a few short headers on the title " + title+ " in the language: " + language).content
+  return generate_text("Write a personal blog with 1 or 2 headers (but not titled header) on the title " + title+ " in the language: " + language).content
 
 
 def generate_text(content):
@@ -28,3 +34,4 @@ def generate_text(content):
       ]
   )
   return response['choices'][0]['message']['content']
+

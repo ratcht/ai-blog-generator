@@ -98,7 +98,7 @@ body{
   padding-top: 0.5%;
   padding-bottom: 0.5%;
   font-family: 'Arial';
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   background-color: white;
   color: black;
   border: 2px solid black; /* Green */
@@ -117,11 +117,11 @@ body{
 }
 
 .generate-button{
-  width:7%;
+  width:8%;
   padding-top: 0.5%;
   padding-bottom: 0.5%;
   font-family: 'Arial';
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   background-color: white;
   color: black;
   border: 2px solid black; /* Green */

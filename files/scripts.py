@@ -10,6 +10,7 @@ class Language(str, Enum):
   ENGLISH="English"
   GERMAN="German"
   FRENCH="French"
+  SPANISH="Spanish"
 
 
 class ProjectType(str, Enum):
@@ -17,7 +18,7 @@ class ProjectType(str, Enum):
   KEYWORDS="By Keywords"
 
 class Project:
-  def __init__(self, name, status_type: StatusType, project_type:ProjectType,post_delay, language:Language, blog_text=""):
+  def __init__(self, name, status_type: StatusType, project_type:ProjectType,post_delay, language:Language, min_word_count=250, blog_text=""):
     self.name = name
     self.status_type = status_type
     self.project_type=project_type
@@ -28,12 +29,15 @@ class Project:
     self.topic=""
     self.keywords_dynamic=[]
     self.titles=[]
+    self.min_word_count=min_word_count
   
   def create_post_by_title(self, title):
-    self.blog_text = generate_text_by_title(title, self.language.value)
+    print("Waiting for GPT")
+    self.blog_text = generate_text_by_title(title, self.language.value, self.min_word_count)
 
   def create_post_by_keywords(self, topic, keywords):
-    self.blog_text = generate_text_by_keywords(topic, keywords, self.language.value)
+    print("Waiting for GPT")
+    self.blog_text = generate_text_by_keywords(topic, keywords, self.language.value, self.min_word_count)
 
   def generate_periodic(self, website_url="", login="", password=""):
     if self.project_type==ProjectType.KEYWORDS:
@@ -77,7 +81,7 @@ class ComplexEncoder(json.JSONEncoder):
 
 
 def parse_project(json_obj):
-  return Project(json_obj["name"], StatusType(json_obj["status_type"]), ProjectType(json_obj["project_type"]), json_obj["post_delay"], Language(json_obj["language"]), json_obj["blog_text"])
+  return Project(json_obj["name"], StatusType(json_obj["status_type"]), ProjectType(json_obj["project_type"]), json_obj["post_delay"], Language(json_obj["language"]), json_obj["min_word_count"], json_obj["blog_text"])
 
 def save_websites(websites, file_path):
   with open(file_path, "w") as json_file:

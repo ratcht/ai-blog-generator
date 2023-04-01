@@ -81,6 +81,7 @@ def website():
 # clicked on website item
 @app.route("/website/run")
 def run_project():
+  print("Loading...")
   global websites
   website_index=int(request.args.get('web_index'))
   project_index=int(request.args.get('proj_index'))
@@ -107,11 +108,13 @@ def add_project_keywords():
     topic = request.form['topic']
     keywords_list = request.form['keywords'].split('\n')
     language = Language(request.form['language'])
+    min_word_count = request.form['wordcount']
     print(language)
     # parse keywords into array
     new_project = Project(name, StatusType.WEBSITE, ProjectType.KEYWORDS, 0, language)
     new_project.topic = topic
     new_project.keywords_dynamic=keywords_list
+    new_project.min_word_count=min_word_count
 
     websites[website_index].projects.append(new_project)
     print(json.dumps(websites[website_index], cls=ComplexEncoder))
@@ -123,7 +126,21 @@ def add_project_title():
   global websites
   is_failed = 0
   website_index=int(request.args.get('index'))
+  if request.method == "POST":
+    name = request.form['name']
+    title = request.form['titles'].split('\n')
+    language = Language(request.form['language'])
+    min_word_count = request.form['wordcount']
+    print(language)
+    # parse keywords into array
+    new_project = Project(name, StatusType.WEBSITE, ProjectType.TITLES, 0, language)
+    new_project.titles = topic
+    new_project.keywords_dynamic=keywords_list
+    new_project.min_word_count=min_word_count
 
+    websites[website_index].projects.append(new_project)
+    print(json.dumps(websites[website_index], cls=ComplexEncoder))
+    return redirect(url_for('website', index=website_index))
   return render_template("create-project-title.html", failed=is_failed, index=website_index)
 
 if __name__ == "__main__":
