@@ -15,7 +15,9 @@
       <label for="topic">WordPress Application Password (this must be generated):</label><br>
       <input type="text" id="wp_password" name="wp_password"><br><br>
       <label for="topic">Offline? If yes, leave the other fields blank:</label><br>
-      <input type="checkbox" id="is_offline" name="is_offline"style="width:auto;">
+      <input type="checkbox" id="is_online" name="is_offline"style="width:auto;" value="on">
+      <input type="hidden" id="is_offline" name="is_offline"style="width:auto;" value="off">
+
       <label for="is_offline"> Offline (will output to .txt)</label><br><br>
 
       <div" class="button-wrapper">
@@ -27,3 +29,17 @@
     {% endif %}
   </body>
 </html>
+
+<script>
+
+$(function() {
+  if(document.getElementById("is_online").checked) {
+    console.log("CHECKED")
+    document.getElementById('is_offline').disabled = true;
+
+
+    }
+
+});
+
+</script>

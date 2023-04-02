@@ -59,18 +59,21 @@ def add_website():
     wp_login = request.form['wp_login']
     wp_password = request.form['wp_password']
     is_offline = request.form['is_offline']
+    status_type =StatusType.WEBSITE
+    print(is_offline)
 
-    if (website_url=="" or wp_login=="" or wp_password=="") and is_offline=='on': 
+    if website_url=="" or wp_login=="" or wp_password=="": 
       is_failed = 1
       return render_template("create-website.html", failed=is_failed)
     
     if is_offline == 'on':
       # offline website
-      websites.append(Website('Offline Task', 'N/A', 'N/A'))
+      status_type=StatusType.OFFLINE
+      websites.append(Website(status_type, 'Offline Task', 'N/A', 'N/A'))
       return redirect(url_for('index'))
 
     is_failed = 0
-    websites.append(Website(website_url,wp_login,wp_password))
+    websites.append(Website(status_type, website_url,wp_login,wp_password))
     return redirect(url_for('index'))
   return render_template("create-website.html", failed=is_failed)
 
@@ -92,11 +95,7 @@ def run_project():
   website_index=int(request.args.get('web_index'))
   project_index=int(request.args.get('proj_index'))
 
-  url = websites[website_index].website_url
-  login = websites[website_index].login
-  password = websites[website_index].password
-
-  websites[website_index].projects[project_index].generate_periodic()
+  websites[website_index].projects[project_index].generate_periodic(websites[website_index].status_type, websites[website_index].website_url, websites[website_index].login, websites[website_index].password)
 
   print(websites[website_index].projects)
   return render_template("website.html", website = websites[int(website_index)], projects=websites[int(website_index)].projects, index=int(website_index))
@@ -114,10 +113,10 @@ def add_project_keywords():
     topic = request.form['topic']
     keywords_list = request.form['keywords'].split('\n')
     language = Language(request.form['language'])
-    min_word_count = request.form['wordcount']
+    min_word_count = int(request.form['wordcount'])
     print(language)
     # parse keywords into array
-    new_project = Project(name, StatusType.WEBSITE, ProjectType.KEYWORDS, 0, language)
+    new_project = Project(name, ProjectType.KEYWORDS, 0, language)
     new_project.topic = topic
     new_project.keywords_dynamic=keywords_list
     new_project.min_word_count=min_word_count
@@ -139,9 +138,8 @@ def add_project_title():
     min_word_count = request.form['wordcount']
     print(language)
     # parse keywords into array
-    new_project = Project(name, StatusType.WEBSITE, ProjectType.TITLES, 0, language)
-    new_project.titles = topic
-    new_project.keywords_dynamic=keywords_list
+    new_project = Project(name, ProjectType.TITLES, 0, language)
+    new_project.titles = title
     new_project.min_word_count=min_word_count
 
     websites[website_index].projects.append(new_project)
@@ -150,4 +148,4 @@ def add_project_title():
   return render_template("create-project-title.html", failed=is_failed, index=website_index)
 
 if __name__ == "__main__":
-  app.run()
+  app.run(port=8000, debug=True)
