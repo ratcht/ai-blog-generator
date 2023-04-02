@@ -13,7 +13,7 @@ rel_path = "files/text/saves.json"
 abs_file_path = os.path.join(script_dir, rel_path)
 #
 websites = load_websites(abs_file_path)
-websites=[]
+#websites=[]
 #print(websites)
 
 @app.route("/home")
