@@ -3,12 +3,20 @@ import openai
 import os
 
 #Load env vars
-load_dotenv()
+# load_dotenv()
 
-api_key = os.environ.get('GPT_API_KEY')
+script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+rel_path = "api-key.txt"
+abs_file_path = os.path.join(script_dir, rel_path)
 
-#authenticate openai
-openai.api_key = api_key
+
+with open(abs_file_path) as f:
+  # authenticate openai
+  api_key=f.readline()
+  openai.api_key = api_key
+
+# print(api_key)
+# openai.api_key = api_key
 
 
 def generate_text_by_keywords(topic: str, keywords: str, language: str, min_word_count: int):

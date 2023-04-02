@@ -3,7 +3,7 @@ import os
 from flask import Flask, redirect, url_for, render_template, request
 from files.gptapi import generate_text
 from files.scripts import Website, Project, load_websites, save_websites, StatusType, ProjectType, Language, ComplexEncoder
-
+import webbrowser
 
 app = Flask(__name__)
 
@@ -12,8 +12,9 @@ script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 rel_path = "files/text/saves.json"
 abs_file_path = os.path.join(script_dir, rel_path)
 #
-websites = load_websites(abs_file_path)
-print(websites)
+#websites = load_websites(abs_file_path)
+websites=[]
+#print(websites)
 
 @app.route("/home")
 @app.route("/", methods=["GET"])
@@ -62,7 +63,7 @@ def add_website():
     status_type =StatusType.WEBSITE
     print(is_offline)
 
-    if website_url=="" or wp_login=="" or wp_password=="": 
+    if (website_url=="" or wp_login=="" or wp_password=="") and is_offline=="off": 
       is_failed = 1
       return render_template("create-website.html", failed=is_failed)
     
@@ -148,4 +149,5 @@ def add_project_title():
   return render_template("create-project-title.html", failed=is_failed, index=website_index)
 
 if __name__ == "__main__":
+  webbrowser.open('http://127.0.0.1:8000')  # Go to example.com
   app.run(port=8000, debug=True)

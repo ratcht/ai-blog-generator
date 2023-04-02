@@ -50,7 +50,7 @@ class Project:
     elif self.project_type==ProjectType.TITLES:
       for title in self.titles:
         self.create_post_by_title(title)
-        upload_post(status_type, self.name, self.blog_text, website_url, login, password)
+        upload_post(status_type, title, self.blog_text, website_url, login, password)
 
         time.sleep(self.post_delay)
     print("Completed!")
