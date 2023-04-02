@@ -18,9 +18,8 @@ class ProjectType(str, Enum):
   KEYWORDS="By Keywords"
 
 class Project:
-  def __init__(self, name, status_type: StatusType, project_type:ProjectType,post_delay, language:Language, min_word_count=250, blog_text=""):
+  def __init__(self, name, project_type:ProjectType,post_delay, language:Language, min_word_count=250, blog_text=""):
     self.name = name
-    self.status_type = status_type
     self.project_type=project_type
     self.post_delay=post_delay
     self.language = language
@@ -39,11 +38,11 @@ class Project:
     print("Waiting for GPT")
     self.blog_text = generate_text_by_keywords(topic, keywords, self.language.value, self.min_word_count)
 
-  def generate_periodic(self, website_url="", login="", password=""):
+  def generate_periodic(self, status_type ,website_url="", login="", password=""):
     if self.project_type==ProjectType.KEYWORDS:
       for keyword in self.keywords_dynamic:
         self.create_post_by_keywords(self.topic, keyword)
-        upload_post(StatusType.OFFLINE, self.blog_text, website_url, login, password)
+        upload_post(status_type, self.blog_text, website_url, login, password)
 
         time.sleep(self.post_delay)
 
@@ -55,12 +54,13 @@ class Project:
         time.sleep(self.post_delay)
 
   def jsonify(self):
-    return dict(name = self.name, status_type = self.status_type, project_type=self.project_type,post_delay=self.post_delay, language = self.language, blog_text=self.blog_text, on = self.on, topic=self.topic, 
+    return dict(name = self.name, project_type=self.project_type,post_delay=self.post_delay, language = self.language, blog_text=self.blog_text, on = self.on, topic=self.topic, 
                 keywords_dynamic=self.keywords_dynamic,titles=self.titles)
 
 
 class Website:
-  def __init__(self, website_url, login, password, projects=[]):
+  def __init__(self, status_type: StatusType, website_url, login, password, projects=[]):
+    self.status_type: StatusType
     self.website_url=website_url
     self.login = login
     self.password = password
@@ -70,7 +70,7 @@ class Website:
     self.projects.append(Project(name, status_type, project_type, post_delay, language))
 
   def jsonify(self):
-    return dict(website_url=self.website_url, login=self.login, password=self.password, projects=self.projects) 
+    return dict(status_type = self.status_type, website_url=self.website_url, login=self.login, password=self.password, projects=self.projects) 
 
 class ComplexEncoder(json.JSONEncoder):
   def default(self, obj):

@@ -58,11 +58,17 @@ def add_website():
     website_url = request.form['website_url']
     wp_login = request.form['wp_login']
     wp_password = request.form['wp_password']
+    is_offline = request.form['is_offline']
 
-    if website_url=="" or wp_login=="" or wp_password=="": 
+    if (website_url=="" or wp_login=="" or wp_password=="") and is_offline=='on': 
       is_failed = 1
       return render_template("create-website.html", failed=is_failed)
     
+    if is_offline == 'on':
+      # offline website
+      websites.append(Website('Offline Task', 'N/A', 'N/A'))
+      return redirect(url_for('index'))
+
     is_failed = 0
     websites.append(Website(website_url,wp_login,wp_password))
     return redirect(url_for('index'))

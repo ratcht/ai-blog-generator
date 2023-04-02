@@ -14,6 +14,9 @@
       <input type="text" id="wp_login" name="wp_login"><br><br>
       <label for="topic">WordPress Application Password (this must be generated):</label><br>
       <input type="text" id="wp_password" name="wp_password"><br><br>
+      <label for="topic">Offline? If yes, leave the other fields blank:</label><br>
+      <input type="checkbox" id="is_offline" name="is_offline"style="width:auto;">
+      <label for="is_offline"> Offline (will output to .txt)</label><br><br>
 
       <div" class="button-wrapper">
         <input type="submit" class="generate-button"value="Add Website!" />
@@ -24,33 +27,3 @@
     {% endif %}
   </body>
 </html>
-
-
-<script>
-  $(function() {
-
-    $("#submit").on("click",function(){
-      var website_url = document.getElementById('website_url').value;
-      var wp_login = document.getElementById('wp_login').value;
-      var wp_password = document.getElementById('wp_password').value;
-      var json_data = JSON.stringify({website_url:website_url, wp_login:wp_login, wp_password:wp_password});
-      
-			$.ajax({
-        type: "POST",
-        url: "/create/website",
-        contentType: "application/json",
-        dataType: "JSON",
-        data: json_data,
-        success: function(data, textStatus) {
-          console.log(data);
-
-
-        }
-      });
-		});
-  
-  
-  });
-
-
-</script>
