@@ -12,7 +12,7 @@ script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 rel_path = "files/text/saves.json"
 abs_file_path = os.path.join(script_dir, rel_path)
 #
-#websites = load_websites(abs_file_path)
+websites = load_websites(abs_file_path)
 websites=[]
 #print(websites)
 
@@ -58,10 +58,6 @@ def add_website():
   if request.method == "POST":
     website_url = request.form['website_url']
 
-    # add the slash onto the end of the url
-    if website_url[len(website_url)-1] != '/':
-      website_url+='/'
-
     wp_login = request.form['wp_login']
     wp_password = request.form['wp_password']
     is_offline = request.form['is_offline']
@@ -78,6 +74,10 @@ def add_website():
       websites.append(Website(status_type, 'Offline Task', 'N/A', 'N/A'))
       return redirect(url_for('index'))
 
+    # add the slash onto the end of the url
+    if website_url[len(website_url)-1] != '/':
+      website_url+='/'
+      
     is_failed = 0
     websites.append(Website(status_type, website_url,wp_login,wp_password))
     return redirect(url_for('index'))
