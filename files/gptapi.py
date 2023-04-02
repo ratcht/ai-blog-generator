@@ -23,15 +23,50 @@ def generate_text_by_keywords(topic: str, keywords: str, language: str, min_word
   intro_word_count = 0.2*min_word_count
   body_word_count=0.6*min_word_count
   conclusion_word_count=0.2*min_word_count
+
   blog_intro = generate_text("Write the opening to a personal blog page about " + topic+ " that includes the keyword(s) (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(intro_word_count)+". You do not need to introduce the blog itself, just open the post. Do not say 'welcome to my blog'.")
-  blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must meet the minimum word count: "+str(body_word_count))
-  blog_conclusion = generate_text("Write the conclusion section of a personal blog, without saying 'in conclusion' or anything similar, for the introduction: '" +blog_intro +"'. The blog body must be about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must meet the minimum word count: "+str(conclusion_word_count))
+  blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(body_word_count))
+  blog_conclusion = generate_text("Write the conclusion section of a personal blog, without saying 'in conclusion' or anything similar, for the introduction: '" +blog_intro +"'. The blog body must be about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(conclusion_word_count))
+  
+  headers_list=generate_headers(blog_body).split('\n')
+  
+  blog_body_list=blog_body.split('\n\n')
+  blog_body_completed =""
 
-  return blog_intro+'\n'+blog_body+'\n'+blog_conclusion
+  # add header onto each body paragraph
+  for index, para in enumerate(blog_body_list):
+    header = "<h2>"+headers_list[index]+"</h2>"
+    blog_body_completed+=(header+"\n"+para+"\n\n")
 
-def generate_text_by_title(title: str, language: str):
-  return generate_text("Write a personal blog with 1 or 2 headers (but not titled header) on the title " + title+ " in the language: " + language).content
 
+  return blog_intro+'\n\n'+blog_body_completed+blog_conclusion
+
+def generate_text_by_title(title: str, language: str, min_word_count: int):
+  intro_word_count = 0.2*min_word_count
+  body_word_count = 0.6*min_word_count
+  conclusion_word_count = 0.2*min_word_count
+
+  blog_intro = generate_text("Write the opening to a personal blog page on the title " + title+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(intro_word_count)+". You do not need to introduce the blog itself, just open the post. Do not say 'welcome to my blog'.")
+  blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be on the title " + title+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(body_word_count))
+  blog_conclusion = generate_text("Write the conclusion section of a personal blog, without saying 'in conclusion' or anything similar, for the introduction: '" +blog_intro +"'. The blog body must be about " + title+". The blog must be in the language: " + language+". The blog must be around the word count: "+str(conclusion_word_count))
+  
+  headers_list=generate_headers(blog_body).split('\n')
+  
+  blog_body_list=blog_body.split('\n\n')
+  blog_body_completed =""
+
+  # add header onto each body paragraph
+  for index, para in enumerate(blog_body_list):
+    header =""
+    if index < len(headers_list):
+      header = "<h2>"+headers_list[index]+"</h2>"
+
+    blog_body_completed+=(header+"\n"+para+"\n\n")
+
+  return blog_intro+'\n\n'+blog_body_completed+blog_conclusion
+
+def generate_headers(blog_body):
+  return generate_text("create a list (NOT NUMBERED) of short header titles for each main paragraph seperated by a line with no other text for each paragraph (seperated by a line) in the blog body. Do not include anything except the header titles. MAKE SURE THAT IT IS ONLY THE ONE-LINER OF THE HEADER TITLE. Make sure that the number of headers matches the number of paragraphs: '"+blog_body+"'")
 
 def generate_text(content):
   response = openai.ChatCompletion.create(

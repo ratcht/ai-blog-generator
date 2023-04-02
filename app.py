@@ -57,6 +57,11 @@ def add_website():
   is_failed = 0
   if request.method == "POST":
     website_url = request.form['website_url']
+
+    # add the slash onto the end of the url
+    if website_url[len(website_url)-1] != '/':
+      website_url+='/'
+
     wp_login = request.form['wp_login']
     wp_password = request.form['wp_password']
     is_offline = request.form['is_offline']
@@ -121,6 +126,7 @@ def add_project_keywords():
     new_project.topic = topic
     new_project.keywords_dynamic=keywords_list
     new_project.min_word_count=min_word_count
+    new_project.slug = request.form['slug']
 
     websites[website_index].projects.append(new_project)
     print(json.dumps(websites[website_index], cls=ComplexEncoder))
@@ -136,12 +142,13 @@ def add_project_title():
     name = request.form['name']
     title = request.form['titles'].split('\n')
     language = Language(request.form['language'])
-    min_word_count = request.form['wordcount']
+    min_word_count = int(request.form['wordcount'])
     print(language)
     # parse keywords into array
     new_project = Project(name, ProjectType.TITLES, 0, language)
     new_project.titles = title
     new_project.min_word_count=min_word_count
+    new_project.slug = request.form['slug']
 
     websites[website_index].projects.append(new_project)
     print(json.dumps(websites[website_index], cls=ComplexEncoder))
@@ -150,4 +157,4 @@ def add_project_title():
 
 if __name__ == "__main__":
   webbrowser.open('http://127.0.0.1:8000')  # Go to example.com
-  app.run(port=8000, debug=True)
+  app.run(port=8000)

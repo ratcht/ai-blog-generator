@@ -19,7 +19,7 @@ class ProjectType(str, Enum):
 
 
 class Project:
-  def __init__(self, name, project_type:ProjectType,post_delay, language:Language, min_word_count=250, blog_text=""):
+  def __init__(self, name, project_type:ProjectType,post_delay, language:Language, min_word_count=250, blog_text="", slug="post"):
     self.name = name
     self.project_type=project_type
     self.post_delay=post_delay
@@ -30,6 +30,7 @@ class Project:
     self.keywords_dynamic=[]
     self.titles=[]
     self.min_word_count=min_word_count
+    self.slug = slug
   
   def create_post_by_title(self, title):
     print("Waiting for GPT")
@@ -43,21 +44,21 @@ class Project:
     if self.project_type==ProjectType.KEYWORDS:
       for keyword in self.keywords_dynamic:
         self.create_post_by_keywords(self.topic, keyword)
-        upload_post(status_type, self.name, self.blog_text, website_url, login, password)
+        upload_post(status_type, self.name, self.blog_text, website_url, login, password, self.slug)
 
         time.sleep(self.post_delay)
 
     elif self.project_type==ProjectType.TITLES:
       for title in self.titles:
         self.create_post_by_title(title)
-        upload_post(status_type, title, self.blog_text, website_url, login, password)
+        upload_post(status_type, title, self.blog_text, website_url, login, password, self.slug)
 
         time.sleep(self.post_delay)
     print("Completed!")
 
   def jsonify(self):
     return dict(name = self.name, project_type=self.project_type,post_delay=self.post_delay, language = self.language, min_word_count=self.min_word_count , blog_text=self.blog_text, on = self.on, topic=self.topic, 
-                keywords_dynamic=self.keywords_dynamic,titles=self.titles)
+                keywords_dynamic=self.keywords_dynamic,titles=self.titles, slug=self.slug)
 
 
 class Website:
@@ -81,7 +82,11 @@ class ComplexEncoder(json.JSONEncoder):
 
 
 def parse_project(json_obj):
-  return Project(json_obj["name"], ProjectType(json_obj["project_type"]), json_obj["post_delay"], Language(json_obj["language"]), int(json_obj["min_word_count"]), json_obj["blog_text"])
+  project = Project(json_obj["name"], ProjectType(json_obj["project_type"]), json_obj["post_delay"], Language(json_obj["language"]), int(json_obj["min_word_count"]), json_obj["blog_text"], json_obj["slug"])
+  project.keywords_dynamic=json_obj["keywords_dynamic"]
+  project.topic=json_obj["topic"]
+  project.titles=json_obj["titles"]
+  return project
 
 def save_websites(websites, file_path):
   with open(file_path, "w") as json_file:

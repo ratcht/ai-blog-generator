@@ -11,7 +11,8 @@
       <form id="create-project" action="/add/project/titles?index={{index}}" method="POST">
         <label for="topic">Project Name:</label><br>
         <input type="text" id="name" name="name"><br><br>
-        
+        <label for="topic">Custom Post Slug (leave untouched for default or offline projects):</label><br>
+        <input type="text" id="slug" name="slug" value="posts"><br><br>
         Language:<br>
         <input type="radio" id="english" name="language" value="English" style="width:auto;" checked>
         <label for="english">English  </label>
@@ -22,8 +23,8 @@
         <input type="radio" id="german" name="language" value="German"style="width:auto;">
         <label for="german">German  </label><br><br>
 
-        <label for="wordcount">Minimum Wordcount:</label><br>
-        <input type="text" id="wordcount" name="wordcount"><br><br>
+        <label for="wordcount">Min Word Count (default 250):</label><br>
+        <input type="number" id="wordcount" name="wordcount" value="250"><br><br>
         <label for="titles">Titles:</label><br>
       </form>
       <textarea id="titles" name="titles" form="create-project" placeholder="Enter Titles here... (one per line)"></textarea>

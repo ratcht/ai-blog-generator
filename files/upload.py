@@ -8,20 +8,20 @@ class StatusType(str, Enum):
   OFFLINE=2
     
 
-def upload_post(type: StatusType, name, blog_text, website_url ="", login="", password="", endpoint="posts"):
+def upload_post(type: StatusType, name, blog_text, website_url ="", login="", password="", slug="posts"):
   if type == StatusType.WEBSITE:
-    wp_upload(name, blog_text, website_url, login, password,endpoint)
+    wp_upload(name, blog_text, website_url, login, password,slug)
     
   elif type == StatusType.OFFLINE:
     txt_upload(blog_text)
 
 
-def wp_upload(name, blog_text, website_url, login, password, endpoint):
+def wp_upload(name, blog_text, website_url, login, password, slug):
   print("WP Upload!")
   # username="chatgpt2023"
   # password="syr7 2saN DGs8 2ktF NwFP frnJ"
 
-  url = str(website_url)+"wp-json/wp/v2/"+endpoint
+  url = str(website_url)+"wp-json/wp/v2/"+slug
   print(url)
   credentials = login + ':' + password
   token = base64.b64encode(credentials.encode())
