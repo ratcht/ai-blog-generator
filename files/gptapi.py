@@ -49,7 +49,7 @@ def generate_text_by_keywords(topic: str, keywords: str, language: str, min_word
   # add header onto each body paragraph
   for index, para in enumerate(blog_body_list):
     header=""
-    if index < len(headers_list):
+    if len(headers_list)>index:
       header = "<h2>"+headers_list[index]+"</h2>"
     blog_body_completed+=(header+"\n"+para+"\n\n")
 
