@@ -46,11 +46,12 @@ def txt_upload(blog_text):
   #rel_path = "files/text/saves.json"
   #abs_file_path = os.path.join(script_dir, rel_path)
   # upload to text document + download
+ # print(os.getcwd())
   i = 0
-  while os.path.exists(os.path.join(script_dir, "text/blog%s.txt") %i):
+  while os.path.exists(os.path.join(os.getcwd(), "text/blog%s.txt") %i):
     i += 1
 
-  with open(os.path.join(script_dir, "text/blog%s.txt") %i, 'w') as f:
+  with open(os.path.join(os.getcwd(), "text/blog%s.txt") %i, 'w') as f:
     f.write(blog_text)
 
   

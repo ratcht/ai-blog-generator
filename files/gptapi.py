@@ -5,10 +5,23 @@ import os
 #Load env vars
 # load_dotenv()
 
-script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-rel_path = "api-key.txt"
-abs_file_path = os.path.join(script_dir, rel_path)
+import sys
 
+
+def resource_path(relative_path):
+  """ Get absolute path to resource, works for dev and for PyInstaller """
+  try:
+    # PyInstaller creates a temp folder and stores path in _MEIPASS
+    base_path = sys._MEIPASS
+  except Exception:
+    base_path = os.path.abspath(".")
+
+  return os.path.join(base_path, relative_path)
+
+script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+rel_path = "files/api-key.txt"
+# abs_file_path = os.path.join(script_dir, rel_path)
+abs_file_path = resource_path(rel_path)
 
 with open(abs_file_path) as f:
   # authenticate openai
@@ -35,7 +48,9 @@ def generate_text_by_keywords(topic: str, keywords: str, language: str, min_word
 
   # add header onto each body paragraph
   for index, para in enumerate(blog_body_list):
-    header = "<h2>"+headers_list[index]+"</h2>"
+    header=""
+    if index < len(headers_list):
+      header = "<h2>"+headers_list[index]+"</h2>"
     blog_body_completed+=(header+"\n"+para+"\n\n")
 
 

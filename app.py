@@ -3,14 +3,30 @@ import os
 from flask import Flask, redirect, url_for, render_template, request
 from files.gptapi import generate_text
 from files.scripts import Website, Project, load_websites, save_websites, StatusType, ProjectType, Language, ComplexEncoder
-import webbrowser
+# import webbrowser
+import sys
 
 app = Flask(__name__)
+
+def resource_path(relative_path):
+  """ Get absolute path to resource, works for dev and for PyInstaller """
+  try:
+    # PyInstaller creates a temp folder and stores path in _MEIPASS
+    base_path = sys._MEIPASS
+  except Exception:
+    base_path = os.path.abspath(".")
+
+  return os.path.join(base_path, relative_path)
 
 
 script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 rel_path = "files/text/saves.json"
-abs_file_path = os.path.join(script_dir, rel_path)
+# abs_file_path = os.path.join(script_dir, rel_path)
+abs_file_path = resource_path(rel_path)
+
+# testpath = resource_path(rel_path)
+
+
 #
 websites = load_websites(abs_file_path)
 #websites=[]
@@ -156,5 +172,5 @@ def add_project_title():
   return render_template("create-project-title.html", failed=is_failed, index=website_index)
 
 if __name__ == "__main__":
-  webbrowser.open('http://127.0.0.1:8000')  # Go to example.com
+  # webbrowser.open('http://127.0.0.1:8000')  # Go to example.com
   app.run(port=8000)
