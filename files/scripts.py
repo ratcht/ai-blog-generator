@@ -62,16 +62,21 @@ class Project:
 
 
 class Website:
-  def __init__(self, status_type: StatusType, website_url, login, password, projects=[]):
+  def __init__(self, status_type: StatusType, website_url, login, password):
     self.status_type = status_type
     self.website_url=website_url
     self.login = login
     self.password = password
-    self.projects = projects
+    self.projects = []
 
   def jsonify(self):
     return dict(status_type = self.status_type, website_url=self.website_url, login=self.login, password=self.password, projects=self.projects) 
+ 
+  def get_projects(self):
+    return self.projects
 
+  def add_project(self, project):
+    self.projects.append(project)
 
 class ComplexEncoder(json.JSONEncoder):
   def default(self, obj):
@@ -92,14 +97,17 @@ def save_websites(websites, file_path):
   with open(file_path, "w") as json_file:
     json_file.write(json.dumps(websites, cls=ComplexEncoder))
 
+
+
+
 def load_websites(file_path):
   websites = []
   _file = open(file_path)
   json_data = json.load(_file)
   for site in json_data:
-    projects =[]
-    for proj in site["projects"]:
-      projects.append(parse_project(proj))
-    websites.append(Website(site["status_type"], site["website_url"], site["login"], site["password"], projects))
+    website_to_add = Website(site["status_type"], site["website_url"], site["login"], site["password"])
+    for project in site['projects']:
+      website_to_add.add_project(parse_project(project))
+    websites.append(website_to_add)
   return websites
 

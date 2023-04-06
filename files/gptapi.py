@@ -74,7 +74,7 @@ def generate_text_by_title(title: str, language: str, min_word_count: int):
   for index, para in enumerate(blog_body_list):
     header =""
     if index < len(headers_list):
-      header = "<h2>"+headers_list[index]+"</h2>"
+      header = "<h2>"+headers_list[index].replace('-','')+"</h2>"
 
     blog_body_completed+=(header+"\n"+para+"\n\n")
 

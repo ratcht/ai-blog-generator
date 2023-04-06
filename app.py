@@ -26,11 +26,9 @@ abs_file_path = resource_path(rel_path)
 
 # testpath = resource_path(rel_path)
 
-
-#
 websites = load_websites(abs_file_path)
-#websites=[]
-#print(websites)
+# websites=[]
+
 
 @app.route("/home")
 @app.route("/", methods=["GET"])
@@ -78,7 +76,6 @@ def add_website():
     wp_password = request.form['wp_password']
     is_offline = request.form['is_offline']
     status_type =StatusType.WEBSITE
-    print(is_offline)
 
     if (website_url=="" or wp_login=="" or wp_password=="") and is_offline=="off": 
       is_failed = 1
@@ -88,6 +85,7 @@ def add_website():
       # offline website
       status_type=StatusType.OFFLINE
       websites.append(Website(status_type, 'Offline Task', 'N/A', 'N/A'))
+      print("Successfully added website!")
       return redirect(url_for('index'))
 
     # add the slash onto the end of the url
@@ -95,6 +93,8 @@ def add_website():
       website_url+='/'
       
     is_failed = 0
+
+    print("Successfully added website!")
     websites.append(Website(status_type, website_url,wp_login,wp_password))
     return redirect(url_for('index'))
   return render_template("create-website.html", failed=is_failed)
@@ -122,6 +122,22 @@ def run_project():
   print(websites[website_index].projects)
   return render_template("website.html", website = websites[int(website_index)], projects=websites[int(website_index)].projects, index=int(website_index))
 
+# clicked on website item
+@app.route("/website/delete")
+def del_project():
+  print("Loading...")
+  global websites
+  website_index=int(request.args.get('web_index'))
+  project_index=int(request.args.get('proj_index'))
+
+  try:
+    websites[website_index].projects.pop(project_index)
+  except:
+    print("Something went wrong...")
+  else:
+    print("Succesfully deleted!")
+  return render_template("website.html", website = websites[int(website_index)], projects=websites[int(website_index)].projects, index=int(website_index))
+
 
 # add project
 @app.route("/add/project/keywords", methods=["GET", "POST"])
@@ -136,7 +152,6 @@ def add_project_keywords():
     keywords_list = request.form['keywords'].split('\n')
     language = Language(request.form['language'])
     min_word_count = int(request.form['wordcount'])
-    print(language)
     # parse keywords into array
     new_project = Project(name, ProjectType.KEYWORDS, 0, language)
     new_project.topic = topic
@@ -144,8 +159,10 @@ def add_project_keywords():
     new_project.min_word_count=min_word_count
     new_project.slug = request.form['slug']
 
-    websites[website_index].projects.append(new_project)
-    print(json.dumps(websites[website_index], cls=ComplexEncoder))
+
+
+    websites[website_index].add_project(new_project)
+    print("Project added!")
     return redirect(url_for('website', index=website_index))
   return render_template("create-project-keywords.html", failed=is_failed, index=website_index)
 
@@ -173,4 +190,4 @@ def add_project_title():
 
 if __name__ == "__main__":
   # webbrowser.open('http://127.0.0.1:8000')  # Go to example.com
-  app.run(port=5000)
+  app.run(port=8000)
