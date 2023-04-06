@@ -148,13 +148,17 @@ def add_project_keywords():
 
   if request.method == "POST":
     name = request.form['name']
-    topic = request.form['topic']
-    keywords_list = request.form['keywords'].split('\n')
+    general_statement = request.form['general-statement']
+    fill_blanks = request.form['fill-blank'].split('\r\n')
+    print(fill_blanks)
+
+    keywords_list = request.form['keywords'].split('\r\n')
     language = Language(request.form['language'])
     min_word_count = int(request.form['wordcount'])
     # parse keywords into array
     new_project = Project(name, ProjectType.KEYWORDS, 0, language)
-    new_project.topic = topic
+    new_project.general_statement = general_statement
+    new_project.fill_blanks = fill_blanks
     new_project.keywords_dynamic=keywords_list
     new_project.min_word_count=min_word_count
     new_project.slug = request.form['slug']

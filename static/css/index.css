@@ -23,7 +23,7 @@ input:focus {
   border: 3px solid #555;
 }
 
-#keywords{
+#keywords, #fill-blank{
   width: 30vw;
   padding: 4px 4px;
   margin: 8px 0;

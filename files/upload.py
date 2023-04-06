@@ -17,7 +17,7 @@ def upload_post(type: StatusType, name, blog_text, website_url ="", login="", pa
 
 
 def wp_upload(name, blog_text, website_url, login, password, slug):
-  print("WP Upload!")
+  print("Waiting for WP")
   # username="chatgpt2023"
   # password="syr7 2saN DGs8 2ktF NwFP frnJ"
 
@@ -36,6 +36,8 @@ def wp_upload(name, blog_text, website_url, login, password, slug):
   'categories': 5 # category ID
   }
   response = requests.post(url , headers=header, json=post)
+  print("WP Upload!")
+
 
   
 

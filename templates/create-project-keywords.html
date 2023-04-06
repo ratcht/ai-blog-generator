@@ -23,13 +23,20 @@
         <input type="radio" id="german" name="language" value="German"style="width:auto;">
         <label for="german">German  </label><br><br>
 
-        <label for="topic">Topic:</label><br>
-        <input type="text" id="topic" name="topic"><br><br>
+
         <label for="topic">Min Word Count (default 250):</label><br>
         <input type="number" id="wordcount" name="wordcount" value="250"><br><br>
-        <label for="keywords">Keywords:</label><br>
+        <label for="general-statement">General Statement:</label><br>
+        <input type="text" id="general-statement" name="general-statement"><br><br>
+        <label for="keywords">Fill-in-the-blank Words:</label><br>
+
       </form>
-      <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea>
+      <textarea id="fill-blank" name="fill-blank" form="create-project" placeholder="Enter fill-in-the-blank keywords here... (one per line)"></textarea><br><br>
+
+      <label for="keywords">Focus Keywords:</label><br>
+      <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      
+      
       <div" class="button-wrapper">
         <button form="create-project" type="submit" class="generate-button">Add Project!</button>
       </div>

@@ -26,7 +26,8 @@ class Project:
     self.language = language
     self.blog_text=blog_text
     self.on = False
-    self.topic=""
+    self.general_statement=""
+    self.fill_blanks=[]
     self.keywords_dynamic=[]
     self.titles=[]
     self.min_word_count=min_word_count
@@ -36,23 +37,23 @@ class Project:
     print("Waiting for GPT")
     self.blog_text = generate_text_by_title(title, self.language.value, self.min_word_count)
 
-  def create_post_by_keywords(self, topic, keywords):
+  def create_post_by_keywords(self, general_statement, fill_blank, keywords):
     print("Waiting for GPT")
-    self.blog_text = generate_text_by_keywords(topic, keywords, self.language.value, self.min_word_count)
+    self.blog_text = generate_text_by_keywords(general_statement, fill_blank, keywords, self.language.value, self.min_word_count)
 
   def generate_periodic(self, status_type ,website_url="", login="", password=""):
     if self.project_type==ProjectType.KEYWORDS:
-      for keyword in self.keywords_dynamic:
-        self.create_post_by_keywords(self.topic, keyword)
-        upload_post(status_type, self.name, self.blog_text, website_url, login, password, self.slug)
-
+      for fill_blank in self.fill_blanks:
+        self.create_post_by_keywords(self.general_statement, fill_blank, (', ').join(self.keywords_dynamic))
+        print("GPT Done!")
+        upload_post(status_type, self.general_statement+" "+fill_blank, self.blog_text, website_url, login, password, self.slug)
         time.sleep(self.post_delay)
 
     elif self.project_type==ProjectType.TITLES:
       for title in self.titles:
         self.create_post_by_title(title)
+        print("GPT Done!")
         upload_post(status_type, title, self.blog_text, website_url, login, password, self.slug)
-
         time.sleep(self.post_delay)
     print("Completed!")
 

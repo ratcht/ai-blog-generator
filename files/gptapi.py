@@ -32,14 +32,15 @@ with open(abs_file_path) as f:
 # openai.api_key = api_key
 
 
-def generate_text_by_keywords(topic: str, keywords: str, language: str, min_word_count: int):
+def generate_text_by_keywords(general_statement: str, fill_blank: str, keywords: str, language: str, min_word_count: int):
   intro_word_count = 0.2*min_word_count
   body_word_count=0.6*min_word_count
   conclusion_word_count=0.2*min_word_count
+  print("TItle: "+general_statement+" "+fill_blank)
 
-  blog_intro = generate_text("Write the opening to a personal blog page about " + topic+ " that includes the keyword(s) (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(intro_word_count)+". You do not need to introduce the blog itself, just open the post. Do not say 'welcome to my blog'.")
-  blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(body_word_count))
-  blog_conclusion = generate_text("Write the conclusion section of a personal blog, without saying 'in conclusion' or anything similar, for the introduction: '" +blog_intro +"'. The blog body must be about " + topic+ " that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(conclusion_word_count))
+  blog_intro = generate_text("Write the opening to a personal blog on the title: " + general_statement+" "+fill_blank +" that includes the keyword(s) (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(intro_word_count)+". You do not need to introduce the blog itself, just open the post. Do not say 'welcome to my blog'.")
+  blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be on the title: " + general_statement+" "+fill_blank +" that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(body_word_count))
+  blog_conclusion = generate_text("Write the conclusion section of a personal blog, without saying 'in conclusion' or anything similar, for the introduction: '" +blog_intro +"'. The blog body must be on the title: " + general_statement+" "+fill_blank +" that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(conclusion_word_count))
   
   headers_list=generate_headers(blog_body).split('\n')
   
@@ -50,7 +51,7 @@ def generate_text_by_keywords(topic: str, keywords: str, language: str, min_word
   for index, para in enumerate(blog_body_list):
     header=""
     if len(headers_list)>index:
-      header = "<h2>"+headers_list[index]+"</h2>"
+      header = "<h2>"+headers_list[index].replace('-','')+"</h2>"
     blog_body_completed+=(header+"\n"+para+"\n\n")
 
 
