@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+
+<head>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js">  </script>
+</head>
+
+<html>
+  <body>
+    <div class="body-wrapper">
+      <form id="create-project" action="/add/project/keywords?index={{index}}" method="POST">
+        <label for="topic">Project Name:</label><br>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="topic">Custom Post Slug (leave untouched for default or offline projects):</label><br>
+        <input type="text" id="slug" name="slug" value="posts"><br><br>
+        Language:<br>
+        <input type="radio" id="english" name="language" value="English" style="width:auto;" checked>
+        <label for="english">English  </label>
+        <input type="radio" id="french" name="language" value="French"style="width:auto;">
+        <label for="french">French  </label>
+        <input type="radio" id="spanish" name="language" value="Spanish"style="width:auto;">
+        <label for="spanish">Spanish  </label>
+        <input type="radio" id="german" name="language" value="German"style="width:auto;">
+        <label for="german">German  </label><br><br>
+
+
+        <label for="topic">Min Word Count (default 250):</label><br>
+        <input type="number" id="wordcount" name="wordcount" value="250"><br><br>
+        <label for="general-statement">General Statement:</label><br>
+        <input type="text" id="general-statement" name="general-statement"><br><br>
+        <label for="keywords">Fill-in-the-blank Words:</label><br>
+
+      </form>
+      <textarea id="fill-blank" name="fill-blank" form="create-project" placeholder="Enter fill-in-the-blank keywords here... (one per line)"></textarea><br><br>
+
+      <label for="keywords">Focus Keywords:</label><br>
+      <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      
+      
+      <div" class="button-wrapper">
+        <button form="create-project" type="submit" class="generate-button">Add Project!</button>
+      </div>
+    </div>
+    
+    
+    {% if failed == 1 %}
+    <p style="margin-left:1%;">One or more fields were typed incorrectly. Please try again.</p>
+    {% endif %}
+  </body>
+</html>
+

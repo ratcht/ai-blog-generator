@@ -63,7 +63,7 @@ def generate_text_by_title(title: str, language: str, min_word_count: int):
   conclusion_word_count = 0.2*min_word_count
 
   blog_intro = generate_text("Write the opening to a personal blog page on the title " + title+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(intro_word_count)+". You do not need to introduce the blog itself, just open the post. Do not say 'welcome to my blog'.")
-  blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be on the title " + title+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(body_word_count))
+  blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be on the title " + title+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(body_word_count) + ". Do not repeat the title in the first line.")
   blog_conclusion = generate_text("Write the conclusion section of a personal blog, without saying 'in conclusion' or anything similar, for the introduction: '" +blog_intro +"'. The blog body must be about " + title+". The blog must be in the language: " + language+". The blog must be around the word count: "+str(conclusion_word_count))
   
   headers_list=generate_headers(blog_body).split('\n')

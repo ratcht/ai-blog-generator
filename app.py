@@ -25,10 +25,7 @@ rel_path = "files/text/saves.json"
 abs_file_path = os.path.join(rel_path)
 
 
-# testpath = resource_path(rel_path)
-
 websites = load_websites(abs_file_path)
-# websites=[]
 
 
 @app.route("/home")
@@ -100,7 +97,7 @@ def website():
   return render_template("website.html", website = websites[int(website_index)], projects=websites[int(website_index)].projects, index=int(website_index))
 
 
-# clicked on website item
+# run project
 @app.route("/website/run")
 def run_project():
   print("Loading...")
@@ -113,7 +110,7 @@ def run_project():
   print(websites[website_index].projects)
   return render_template("website.html", website = websites[int(website_index)], projects=websites[int(website_index)].projects, index=int(website_index))
 
-# clicked on website item
+# delete project
 @app.route("/website/delete")
 def del_project():
   print("Loading...")
@@ -183,6 +180,38 @@ def add_project_title():
 
   websites[website_index].projects.append(new_project)
   print(json.dumps(websites[website_index], cls=ComplexEncoder))
+  return redirect(url_for('website', index=website_index))
+
+
+# add project
+@app.route("/add/project/placeholder", methods=["GET", "POST"])
+def add_project_placeholder():
+  global websites
+  is_failed = 0
+  website_index=int(request.args.get('index'))
+  if request.method == "GET":
+    return render_template("create-project-placeholder.html", failed=is_failed, index=website_index)
+
+  name = request.form['name']
+  general_statement = request.form['general-statement']
+  fill_blanks = request.form['fill-blank'].split('\r\n')
+  print(fill_blanks)
+
+  keywords_list = request.form['keywords'].split('\r\n')
+  language = Language(request.form['language'])
+  min_word_count = int(request.form['wordcount'])
+  # parse keywords into array
+  new_project = Project(name, ProjectType.KEYWORDS, 0, language)
+  new_project.general_statement = general_statement
+  new_project.fill_blanks = fill_blanks
+  new_project.keywords_dynamic=keywords_list
+  new_project.min_word_count=min_word_count
+  new_project.slug = request.form['slug']
+
+
+
+  websites[website_index].add_project(new_project)
+  print("Project added!")
   return redirect(url_for('website', index=website_index))
 
 if __name__ == "__main__":

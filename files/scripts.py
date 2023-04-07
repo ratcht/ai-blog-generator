@@ -16,6 +16,8 @@ class Language(str, Enum):
 class ProjectType(str, Enum):
   TITLES="By Title"
   KEYWORDS="By Keywords"
+  PLACEHOLDER="By Placeholder"
+
 
 
 class Project:
