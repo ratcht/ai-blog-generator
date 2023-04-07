@@ -22,7 +22,8 @@ def resource_path(relative_path):
 script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 rel_path = "files/text/saves.json"
 # abs_file_path = os.path.join(script_dir, rel_path)
-abs_file_path = resource_path(rel_path)
+abs_file_path = os.path.join(rel_path)
+
 
 # testpath = resource_path(rel_path)
 
@@ -50,54 +51,44 @@ def delete_website():
   return redirect(url_for('index')) 
 
 
-# submit to gptapi
-@app.route("/submit",methods=["POST"])
-def submit():
-  blog_text = ""
-  if request.method == "POST":
-    topic = request.get_json()['topic']
-    keywords = request.get_json()['keywords']
-    api_response = generate_text(topic, keywords)
-    blog_text = api_response["choices"][0]["message"]["content"]
-    print(blog_text)
-  return json.dumps(blog_text)
-
-
 
 # add website page and POST request
 @app.route("/add/website", methods=["GET", "POST"])
 def add_website():
   global websites
   is_failed = 0
-  if request.method == "POST":
-    website_url = request.form['website_url']
 
-    wp_login = request.form['wp_login']
-    wp_password = request.form['wp_password']
-    is_offline = request.form['is_offline']
-    status_type =StatusType.WEBSITE
+  if request.method == "GET":
+    return render_template("create-website.html", failed=is_failed)
 
-    if (website_url=="" or wp_login=="" or wp_password=="") and is_offline=="off": 
-      is_failed = 1
-      return render_template("create-website.html", failed=is_failed)
-    
-    if is_offline == 'on':
-      # offline website
-      status_type=StatusType.OFFLINE
-      websites.append(Website(status_type, 'Offline Task', 'N/A', 'N/A'))
-      print("Successfully added website!")
-      return redirect(url_for('index'))
+  website_url = request.form['website_url']
 
-    # add the slash onto the end of the url
-    if website_url[len(website_url)-1] != '/':
-      website_url+='/'
-      
-    is_failed = 0
+  wp_login = request.form['wp_login']
+  wp_password = request.form['wp_password']
+  is_offline = request.form['is_offline']
+  status_type =StatusType.WEBSITE
 
+  if (website_url=="" or wp_login=="" or wp_password=="") and is_offline=="off": 
+    is_failed = 1
+    return render_template("create-website.html", failed=is_failed)
+  
+  if is_offline == 'on':
+    # offline website
+    status_type=StatusType.OFFLINE
+    websites.append(Website(status_type, 'Offline Task', 'N/A', 'N/A'))
     print("Successfully added website!")
-    websites.append(Website(status_type, website_url,wp_login,wp_password))
     return redirect(url_for('index'))
-  return render_template("create-website.html", failed=is_failed)
+
+  # add the slash onto the end of the url
+  if website_url[len(website_url)-1] != '/':
+    website_url+='/'
+    
+  is_failed = 0
+
+  print("Successfully added website!")
+  websites.append(Website(status_type, website_url,wp_login,wp_password))
+  return redirect(url_for('index'))
+  
 
 
 # clicked on website item
@@ -145,52 +136,54 @@ def add_project_keywords():
   global websites
   is_failed = 0
   website_index=int(request.args.get('index'))
+  if request.method == "GET":
+    return render_template("create-project-keywords.html", failed=is_failed, index=website_index)
 
-  if request.method == "POST":
-    name = request.form['name']
-    general_statement = request.form['general-statement']
-    fill_blanks = request.form['fill-blank'].split('\r\n')
-    print(fill_blanks)
+  name = request.form['name']
+  general_statement = request.form['general-statement']
+  fill_blanks = request.form['fill-blank'].split('\r\n')
+  print(fill_blanks)
 
-    keywords_list = request.form['keywords'].split('\r\n')
-    language = Language(request.form['language'])
-    min_word_count = int(request.form['wordcount'])
-    # parse keywords into array
-    new_project = Project(name, ProjectType.KEYWORDS, 0, language)
-    new_project.general_statement = general_statement
-    new_project.fill_blanks = fill_blanks
-    new_project.keywords_dynamic=keywords_list
-    new_project.min_word_count=min_word_count
-    new_project.slug = request.form['slug']
-
+  keywords_list = request.form['keywords'].split('\r\n')
+  language = Language(request.form['language'])
+  min_word_count = int(request.form['wordcount'])
+  # parse keywords into array
+  new_project = Project(name, ProjectType.KEYWORDS, 0, language)
+  new_project.general_statement = general_statement
+  new_project.fill_blanks = fill_blanks
+  new_project.keywords_dynamic=keywords_list
+  new_project.min_word_count=min_word_count
+  new_project.slug = request.form['slug']
 
 
-    websites[website_index].add_project(new_project)
-    print("Project added!")
-    return redirect(url_for('website', index=website_index))
-  return render_template("create-project-keywords.html", failed=is_failed, index=website_index)
+
+  websites[website_index].add_project(new_project)
+  print("Project added!")
+  return redirect(url_for('website', index=website_index))
 
 @app.route("/add/project/titles", methods=["GET", "POST"])
 def add_project_title():
   global websites
   is_failed = 0
   website_index=int(request.args.get('index'))
-  if request.method == "POST":
-    name = request.form['name']
-    title = request.form['titles'].split('\n')
-    language = Language(request.form['language'])
-    min_word_count = int(request.form['wordcount'])
-    print(language)
-    # parse keywords into array
-    new_project = Project(name, ProjectType.TITLES, 0, language)
-    new_project.titles = title
-    new_project.min_word_count=min_word_count
-    new_project.slug = request.form['slug']
 
-    websites[website_index].projects.append(new_project)
-    print(json.dumps(websites[website_index], cls=ComplexEncoder))
-    return redirect(url_for('website', index=website_index))
-  return render_template("create-project-title.html", failed=is_failed, index=website_index)
+  if request.method == "GET":
+    return render_template("create-project-title.html", failed=is_failed, index=website_index)
+
+  name = request.form['name']
+  title = request.form['titles'].split('\n')
+  language = Language(request.form['language'])
+  min_word_count = int(request.form['wordcount'])
+  print(language)
+  # parse keywords into array
+  new_project = Project(name, ProjectType.TITLES, 0, language)
+  new_project.titles = title
+  new_project.min_word_count=min_word_count
+  new_project.slug = request.form['slug']
+
+  websites[website_index].projects.append(new_project)
+  print(json.dumps(websites[website_index], cls=ComplexEncoder))
+  return redirect(url_for('website', index=website_index))
 
 if __name__ == "__main__":
   # webbrowser.open('http://127.0.0.1:8000')  # Go to example.com

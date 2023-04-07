@@ -58,8 +58,8 @@ class Project:
     print("Completed!")
 
   def jsonify(self):
-    return dict(name = self.name, project_type=self.project_type,post_delay=self.post_delay, language = self.language, min_word_count=self.min_word_count , blog_text=self.blog_text, on = self.on, topic=self.topic, 
-                keywords_dynamic=self.keywords_dynamic,titles=self.titles, slug=self.slug)
+    return dict(name = self.name, project_type=self.project_type,post_delay=self.post_delay, language = self.language, min_word_count=self.min_word_count , blog_text=self.blog_text, on = self.on, general_statement=self.general_statement, 
+                fill_blanks=self.fill_blanks, keywords_dynamic=self.keywords_dynamic,titles=self.titles, slug=self.slug)
 
 
 class Website:
@@ -90,7 +90,8 @@ class ComplexEncoder(json.JSONEncoder):
 def parse_project(json_obj):
   project = Project(json_obj["name"], ProjectType(json_obj["project_type"]), json_obj["post_delay"], Language(json_obj["language"]), int(json_obj["min_word_count"]), json_obj["blog_text"], json_obj["slug"])
   project.keywords_dynamic=json_obj["keywords_dynamic"]
-  project.topic=json_obj["topic"]
+  project.general_statement=json_obj["general_statement"]
+  project.fill_blanks=json_obj["fill_blanks"]
   project.titles=json_obj["titles"]
   return project
 
