@@ -8,7 +8,7 @@
 <html>
   <body>
     <div class="body-wrapper">
-      <form id="create-project" action="/add/project/keywords?index={{index}}" method="POST">
+      <form id="create-project" action="/add/project/placeholder?index={{index}}" method="POST">
         <label for="topic">Project Name:</label><br>
         <input type="text" id="name" name="name"><br><br>
         <label for="topic">Custom Post Slug (leave untouched for default or offline projects):</label><br>
@@ -26,15 +26,18 @@
 
         <label for="topic">Min Word Count (default 250):</label><br>
         <input type="number" id="wordcount" name="wordcount" value="250"><br><br>
-        <label for="general-statement">General Statement:</label><br>
-        <input type="text" id="general-statement" name="general-statement"><br><br>
-        <label for="keywords">Fill-in-the-blank Words:</label><br>
-
+        <label for="prompt">General Prompt. Mark all placeholders with [a], [b], [c], [d]:</label><br>
       </form>
-      <textarea id="fill-blank" name="fill-blank" form="create-project" placeholder="Enter fill-in-the-blank keywords here... (one per line)"></textarea><br><br>
+      <textarea id="prompt" name="prompt" form="create-project" placeholder="Enter the general prompt here..."></textarea><br><br>
 
-      <label for="keywords">Focus Keywords:</label><br>
-      <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      <label for="keywords-a">Words to replace [a]:</label><br>
+      <textarea id="keywords-a" name="keywords-a" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      <label for="keywords-b">Words to replace [b]:</label><br>
+      <textarea id="keywords-b" name="keywords-b" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      <label for="keywords-c">Words to replace [c]:</label><br>
+      <textarea id="keywords-c" name="keywords-c" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      <label for="keywords-d">Words to replace [d]:</label><br>
+      <textarea id="keywords-d" name="keywords-d" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
       
       
       <div" class="button-wrapper">

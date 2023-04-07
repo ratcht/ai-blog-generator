@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import openai
+import re
 import os
 
 #Load env vars
@@ -56,6 +57,18 @@ def generate_text_by_keywords(general_statement: str, fill_blank: str, keywords:
 
 
   return blog_intro+'\n\n'+blog_body_completed+blog_conclusion
+
+def generate_text_by_placeholder(general_prompt: str, placeholder_list: list, keywords: str, language: str, min_word_count: int):
+  word_count=str(min_word_count)
+  prompt = re.sub("\[a\]", placeholder_list[0], general_prompt)
+  prompt = re.sub("\[b\]", placeholder_list[1], prompt)
+  prompt = re.sub("\[c\]", placeholder_list[2], prompt)
+  prompt = re.sub("\[d\]", placeholder_list[3], prompt)
+
+  gpt_result = generate_text("{prompt}. This text must include the keyword(s) (but is not soley focused on): {keywords}. The text must be in the language: {language}. The text must be around the word count: {word_count}.")
+
+
+  return gpt_result
 
 def generate_text_by_title(title: str, language: str, min_word_count: int):
   intro_word_count = 0.2*min_word_count

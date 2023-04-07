@@ -1,4 +1,4 @@
-from files.gptapi import generate_text_by_keywords, generate_text_by_title
+from files.gptapi import generate_text_by_keywords, generate_text_by_title, generate_text_by_placeholder
 from files.upload import StatusType, upload_post
 import time
 import random
@@ -18,6 +18,9 @@ class ProjectType(str, Enum):
   KEYWORDS="By Keywords"
   PLACEHOLDER="By Placeholder"
 
+def find_longest_list_len(list_a, list_b, list_c, list_d):
+  base_list=[list_a, list_b, list_c, list_d]
+  return len(max(base_list, key=len))
 
 
 class Project:
@@ -32,6 +35,12 @@ class Project:
     self.fill_blanks=[]
     self.keywords_dynamic=[]
     self.titles=[]
+    self.general_prompt=""
+    self.keywords_a=[]
+    self.keywords_b=[]
+    self.keywords_c=[]
+    self.keywords_d=[]
+
     self.min_word_count=min_word_count
     self.slug = slug
   
@@ -42,6 +51,11 @@ class Project:
   def create_post_by_keywords(self, general_statement, fill_blank, keywords):
     print("Waiting for GPT")
     self.blog_text = generate_text_by_keywords(general_statement, fill_blank, keywords, self.language.value, self.min_word_count)
+
+  def create_post_by_placeholder(self, general_prompt, placeholder_list, keywords):
+    print("Waiting for GPT")
+    self.blog_text = generate_text_by_placeholder(general_prompt, placeholder_list, keywords, self.language.value, self.min_word_count)
+
 
   def generate_periodic(self, status_type ,website_url="", login="", password=""):
     if self.project_type==ProjectType.KEYWORDS:
@@ -57,11 +71,23 @@ class Project:
         print("GPT Done!")
         upload_post(status_type, title, self.blog_text, website_url, login, password, self.slug)
         time.sleep(self.post_delay)
+
+    elif self.project_type==ProjectType.PLACEHOLDER:
+      upper = find_longest_list_len(self.keywords_a, self.keywords_b,self.keywords_c,self.keywords_d)
+      for i in range(0,upper):
+        keyword_a = self.keywords_a[i] if i < len(self.keywords_a) else self.keywords_a[len(self.keywords_a)-1]
+        keyword_b = self.keywords_b[i] if i < len(self.keywords_b) else self.keywords_b[len(self.keywords_b)-1]
+        keyword_c = self.keywords_c[i] if i < len(self.keywords_c) else self.keywords_c[len(self.keywords_c)-1]
+        keyword_d = self.keywords_d[i] if i < len(self.keywords_d) else self.keywords_d[len(self.keywords_d)-1]
+        self.create_post_by_placeholder(self.general_prompt, [keyword_a,keyword_b,keyword_c,keyword_d], (', ').join(self.keywords_dynamic))
+        print("GPT Done!")
+        upload_post(status_type, self.general_statement+" "+fill_blank, self.blog_text, website_url, login, password, self.slug)
+        time.sleep(self.post_delay)
     print("Completed!")
 
   def jsonify(self):
     return dict(name = self.name, project_type=self.project_type,post_delay=self.post_delay, language = self.language, min_word_count=self.min_word_count , blog_text=self.blog_text, on = self.on, general_statement=self.general_statement, 
-                fill_blanks=self.fill_blanks, keywords_dynamic=self.keywords_dynamic,titles=self.titles, slug=self.slug)
+                fill_blanks=self.fill_blanks, keywords_dynamic=self.keywords_dynamic,titles=self.titles, slug=self.slug, keywords_a=self.keywords_a, keywords_b=self.keywords_b, keywords_c=self.keywords_c, keywords_d=self.keywords_d, general_prompt=self.general_prompt)
 
 
 class Website:

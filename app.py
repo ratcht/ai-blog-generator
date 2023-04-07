@@ -193,17 +193,23 @@ def add_project_placeholder():
     return render_template("create-project-placeholder.html", failed=is_failed, index=website_index)
 
   name = request.form['name']
-  general_statement = request.form['general-statement']
-  fill_blanks = request.form['fill-blank'].split('\r\n')
-  print(fill_blanks)
+  general_prompt = request.form['general-prompt']
+  keywords_a = request.form['keywords-a'].split('\r\n')
+  keywords_b = request.form['keywords-b'].split('\r\n')
+  keywords_c = request.form['keywords-c'].split('\r\n')
+  keywords_d = request.form['keywords-d'].split('\r\n')
 
   keywords_list = request.form['keywords'].split('\r\n')
   language = Language(request.form['language'])
   min_word_count = int(request.form['wordcount'])
   # parse keywords into array
-  new_project = Project(name, ProjectType.KEYWORDS, 0, language)
-  new_project.general_statement = general_statement
-  new_project.fill_blanks = fill_blanks
+  new_project = Project(name, ProjectType.PLACEHOLDER, 0, language)
+  new_project.general_prompt = general_prompt
+  new_project.keywords_a = keywords_a
+  new_project.keywords_b = keywords_b
+  new_project.keywords_c = keywords_c
+  new_project.keywords_d = keywords_d
+
   new_project.keywords_dynamic=keywords_list
   new_project.min_word_count=min_word_count
   new_project.slug = request.form['slug']
