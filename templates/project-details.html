@@ -37,18 +37,15 @@
         {% if project.project_type.value == 'By Keywords' %}
         <div class="body-wrapper">  
           <label for="general-statement">General Statement:</label><br>
-          <input type="text" id="general-statement" name="general-statement" form="create-project"><br><br>
+          <input type="text" id="general-statement" name="general-statement" form="create-project" value="{{project.general_statement}}"><br><br>
           <label for="keywords">Fill-in-the-blank Words:</label><br>
 
-          <textarea id="fill-blank" name="fill-blank" form="create-project">
-
-          </textarea><br><br>
+          <textarea id="fill-blank" name="fill-blank" form="create-project">{% for fill_blank in project.fill_blanks %}{{fill_blank}}
+{% endfor %}</textarea><br><br>
 
           <label for="keywords">Focus Keywords:</label><br>
-          <textarea id="keywords" name="keywords" form="create-project">
-          {% for project in projects %}
-
-          </textarea><br>
+          <textarea id="keywords" name="keywords" form="create-project">{% for keywords in project.keywords_dynamic %}{{keywords}}
+{% endfor %}</textarea><br>
           
           
           <div" class="button-wrapper">
