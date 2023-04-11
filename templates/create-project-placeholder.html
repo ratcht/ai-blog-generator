@@ -26,19 +26,23 @@
 
         <label for="topic">Min Word Count (default 250):</label><br>
         <input type="number" id="wordcount" name="wordcount" value="250"><br><br>
+        <label for="title">General Title, include placeholder [a], [b], [c], or [d]:</label><br>
+        <input type="text" id="wordcount" name="title"><br><br>
         <label for="prompt">General Prompt. Mark all placeholders with [a], [b], [c], [d]:</label><br>
       </form>
       <textarea id="prompt" name="prompt" form="create-project" placeholder="Enter the general prompt here..."></textarea><br><br>
 
-      <label for="keywords-a">Words to replace [a]:</label><br>
-      <textarea id="keywords-a" name="keywords-a" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
-      <label for="keywords-b">Words to replace [b]:</label><br>
-      <textarea id="keywords-b" name="keywords-b" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
-      <label for="keywords-c">Words to replace [c]:</label><br>
-      <textarea id="keywords-c" name="keywords-c" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
-      <label for="keywords-d">Words to replace [d]:</label><br>
-      <textarea id="keywords-d" name="keywords-d" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      <label for="prompt">Words to replace [a]:</label><br>
+      <textarea id="prompt" name="keywords-a" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      <label for="prompt">Words to replace [b]:</label><br>
+      <textarea id="prompt" name="keywords-b" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      <label for="prompt">Words to replace [c]:</label><br>
+      <textarea id="prompt" name="keywords-c" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+      <label for="prompt">Words to replace [d]:</label><br>
+      <textarea id="prompt" name="keywords-d" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
       
+      <label for="keywords">Focus Keywords:</label><br>
+      <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
       
       <div" class="button-wrapper">
         <button form="create-project" type="submit" class="generate-button">Add Project!</button>

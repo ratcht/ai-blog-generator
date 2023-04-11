@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+
+<head>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js">  </script>
+</head>
+
+<html>
+  <body>
+    <div class="body-wrapper">
+      <div class="top-box">
+        <h1 id="main-title">Project Name: {{project.name}}</h1>
+        <div class="subtitles">
+          <p class="subtitle"><u>Project Type:</u> {{project.project_type.value}}</p>
+          <p class="subtitle"><u>Language:</u> {{project.language.value}}</p>
+          <p class="subtitle"><u>Slug:</u> {{project.slug}}</p>
+          <p class="subtitle"><a href="/">Go Back</a></p>
+
+        </div>
+      </div>
+
+      <div id="main">
+
+
+        <form id="create-project" action="/update/project/keywords?index={{index}}" method="POST">
+          <label for="topic">Project Name:</label><br>
+          <input type="text" id="name" name="name" value="{{project.name}}"><br><br>
+          <label for="topic">Custom Post Slug (leave untouched for default or offline projects):</label><br>
+          <input type="text" id="slug" name="slug" value="{{project.slug}}"><br><br>
+  
+  
+          <label for="topic">Min Word Count (default 250):</label><br>
+          <input type="number" id="wordcount" name="wordcount" value="{{project.min_word_count}}"><br><br>
+        </form>
+
+
+        {% if project.project_type.value == 'By Keywords' %}
+        <div class="body-wrapper">  
+          <label for="general-statement">General Statement:</label><br>
+          <input type="text" id="general-statement" name="general-statement" form="create-project"><br><br>
+          <label for="keywords">Fill-in-the-blank Words:</label><br>
+
+          <textarea id="fill-blank" name="fill-blank" form="create-project">
+
+          </textarea><br><br>
+
+          <label for="keywords">Focus Keywords:</label><br>
+          <textarea id="keywords" name="keywords" form="create-project">
+          {% for project in projects %}
+
+          </textarea><br>
+          
+          
+          <div" class="button-wrapper">
+            <button form="create-project" type="submit" class="generate-button">Update Project!</button>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if project.project_type.value == 'By Title' %}
+        <div class="body-wrapper">
+          
+          <label for="titles">Titles:</label><br>
+          <textarea id="titles" name="titles" form="create-project" placeholder="Enter Titles here... (one per line)"></textarea>
+          <div" class="button-wrapper">
+            <button form="create-project" type="submit" class="generate-button">Add Project!</button>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if project.project_type.value == 'By Placeholder' %}
+        <div class="body-wrapper">
+
+          <label for="general-statement">General Statement:</label><br>
+          <input type="text" id="general-statement" form="create-project" name="general-statement"><br><br>
+          <label for="keywords">Fill-in-the-blank Words:</label><br>
+
+          <textarea id="fill-blank" name="fill-blank" form="create-project" placeholder="Enter fill-in-the-blank keywords here... (one per line)"></textarea><br><br>
+
+          <label for="keywords">Focus Keywords:</label><br>
+          <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          
+          
+          <div" class="button-wrapper">
+            <button form="create-project" type="submit" class="generate-button">Add Project!</button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      
+    </div>
+  </body>
+</html>
+

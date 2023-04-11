@@ -45,6 +45,7 @@ def delete_website():
   global websites
   website_index=request.args.get('index')
   websites.pop(int(website_index))
+  save_websites(websites, abs_file_path)
   return redirect(url_for('index')) 
 
 
@@ -84,6 +85,8 @@ def add_website():
 
   print("Successfully added website!")
   websites.append(Website(status_type, website_url,wp_login,wp_password))
+  print("Saved!")
+  save_websites(websites, abs_file_path)
   return redirect(url_for('index'))
   
 
@@ -120,6 +123,8 @@ def del_project():
 
   try:
     websites[website_index].projects.pop(project_index)
+    save_websites(websites, abs_file_path)
+
   except:
     print("Something went wrong...")
   else:
@@ -156,6 +161,9 @@ def add_project_keywords():
 
   websites[website_index].add_project(new_project)
   print("Project added!")
+  print("Saved!")
+  save_websites(websites, abs_file_path)
+
   return redirect(url_for('website', index=website_index))
 
 @app.route("/add/project/titles", methods=["GET", "POST"])
@@ -180,6 +188,8 @@ def add_project_title():
 
   websites[website_index].projects.append(new_project)
   print(json.dumps(websites[website_index], cls=ComplexEncoder))
+  print("Saved!")
+  save_websites(websites, abs_file_path)
   return redirect(url_for('website', index=website_index))
 
 
@@ -193,11 +203,13 @@ def add_project_placeholder():
     return render_template("create-project-placeholder.html", failed=is_failed, index=website_index)
 
   name = request.form['name']
-  general_prompt = request.form['general-prompt']
+  general_prompt = request.form['prompt']
   keywords_a = request.form['keywords-a'].split('\r\n')
   keywords_b = request.form['keywords-b'].split('\r\n')
   keywords_c = request.form['keywords-c'].split('\r\n')
   keywords_d = request.form['keywords-d'].split('\r\n')
+
+  general_title = request.form['title']
 
   keywords_list = request.form['keywords'].split('\r\n')
   language = Language(request.form['language'])
@@ -209,6 +221,7 @@ def add_project_placeholder():
   new_project.keywords_b = keywords_b
   new_project.keywords_c = keywords_c
   new_project.keywords_d = keywords_d
+  new_project.general_title=general_title
 
   new_project.keywords_dynamic=keywords_list
   new_project.min_word_count=min_word_count
@@ -218,7 +231,18 @@ def add_project_placeholder():
 
   websites[website_index].add_project(new_project)
   print("Project added!")
+  print("Saved!")
+  save_websites(websites, abs_file_path)
   return redirect(url_for('website', index=website_index))
+
+
+@app.route("/websites/projects", methods=["GET"])
+def project_details():
+  global websites
+  website_index=int(request.args.get('w_index'))
+  project_index=int(request.args.get('p_index'))
+  project = websites[website_index].projects[project_index]
+  return render_template("project-details.html", project=project)
 
 if __name__ == "__main__":
   # webbrowser.open('http://127.0.0.1:8000')  # Go to example.com

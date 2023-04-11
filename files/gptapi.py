@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import openai
 import re
 import os
+import logging
 
 #Load env vars
 # load_dotenv()
@@ -29,15 +30,14 @@ with open(abs_file_path) as f:
   api_key=f.readline()
   openai.api_key = api_key
 
-# print(api_key)
-# openai.api_key = api_key
+
 
 
 def generate_text_by_keywords(general_statement: str, fill_blank: str, keywords: str, language: str, min_word_count: int):
   intro_word_count = 0.2*min_word_count
   body_word_count=0.6*min_word_count
   conclusion_word_count=0.2*min_word_count
-  print("TItle: "+general_statement+" "+fill_blank)
+  logging.info("Title: {general_statement} {fill_blank}")
 
   blog_intro = generate_text("Write the opening to a personal blog on the title: " + general_statement+" "+fill_blank +" that includes the keyword(s) (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(intro_word_count)+". You do not need to introduce the blog itself, just open the post. Do not say 'welcome to my blog'.")
   blog_body = generate_text("Write the body section of a personal blog for the introduction: '" +blog_intro +"'. The blog body must be on the title: " + general_statement+" "+fill_blank +" that includes the keyword (but is not soley focused on): " + keywords+ ". The blog must be in the language: " + language+". The blog must be around the word count: "+str(body_word_count))
@@ -59,13 +59,12 @@ def generate_text_by_keywords(general_statement: str, fill_blank: str, keywords:
   return blog_intro+'\n\n'+blog_body_completed+blog_conclusion
 
 def generate_text_by_placeholder(general_prompt: str, placeholder_list: list, keywords: str, language: str, min_word_count: int):
-  word_count=str(min_word_count)
   prompt = re.sub("\[a\]", placeholder_list[0], general_prompt)
   prompt = re.sub("\[b\]", placeholder_list[1], prompt)
   prompt = re.sub("\[c\]", placeholder_list[2], prompt)
   prompt = re.sub("\[d\]", placeholder_list[3], prompt)
 
-  gpt_result = generate_text("{prompt}. This text must include the keyword(s) (but is not soley focused on): {keywords}. The text must be in the language: {language}. The text must be around the word count: {word_count}.")
+  gpt_result = generate_text(prompt+". This text must include the keyword(s) (but is not soley focused on):" +keywords+". The text must be in the language: "+language+". The text must be around the word count: "+str(min_word_count))
 
 
   return gpt_result
@@ -98,6 +97,7 @@ def generate_headers(blog_body):
   return generate_text("create a list (NOT NUMBERED) of short header titles for each main paragraph seperated by a line with no other text for each paragraph (seperated by a line) in the blog body. Do not include anything except the header titles. MAKE SURE THAT IT IS ONLY THE ONE-LINER OF THE HEADER TITLE. Make sure that the number of headers matches the number of paragraphs: '"+blog_body+"'")
 
 def generate_text(content):
+  print("Waiting for GPT")
   response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[

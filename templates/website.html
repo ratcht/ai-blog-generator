@@ -45,7 +45,7 @@
             </div>
             {% for project in projects %}
               {% with name=project.name, type=project.project_type.value, language=project.language.value, is_active=project.on , project_index=loop.index-1 , website_index=index %}
-              <div class="website-item"><a href="#" style="text-decoration: none;">{% include "partials/project-item.html" %}</a></div>
+              <div class="website-item"><a href="/websites/projects?w_index={{index}}&p_index={{project_index}}" style="text-decoration: none;">{% include "partials/project-item.html" %}</a></div>
               {% endwith %}
               {% if loop.index != projects|length %}
               <hr class="solid">
