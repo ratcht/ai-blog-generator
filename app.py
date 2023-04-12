@@ -245,7 +245,36 @@ def project_details():
   if request.method == "GET":
     return render_template("project-details.html", project=project, w_index=website_index, p_index=project_index)
   
-  print(request.form['keywords'].removesuffix('\r\n').split('\r\n'))
+  slug = request.form['slug']
+  name = request.form['name']
+  
+  # if keywords project
+  if project.project_type == ProjectType.KEYWORDS:
+    keywords_dynamic = request.form['keywords'].removesuffix('\r\n').split('\r\n')
+    fill_blanks = request.form['fill-blanks'].removesuffix('\r\n').split('\r\n')
+    general_statement = request.form['general-statement']
+
+    websites[website_index].projects[project_index].update_as_keywords(name, general_statement, fill_blanks, keywords_dynamic, slug)
+  
+  # if placeholder project
+  if project.project_type == ProjectType.PLACEHOLDER:
+    keywords_dynamic = request.form['keywords'].removesuffix('\r\n').split('\r\n')
+
+    keywords_a = request.form['keywords-a'].removesuffix('\r\n').split('\r\n')
+    keywords_b = request.form['keywords-b'].removesuffix('\r\n').split('\r\n')
+    keywords_c = request.form['keywords-c'].removesuffix('\r\n').split('\r\n')
+    keywords_d = request.form['keywords-d'].removesuffix('\r\n').split('\r\n')
+    general_prompt = request.form['general-prompt']
+    general_title = request.form['general-title']
+
+    #name, general_prompt, general_title, keywords_a, keywords_b, keywords_c, keywords_d, keywords_dynamic, slug
+    websites[website_index].projects[project_index].update_as_placeholders(name, general_prompt, general_title, keywords_a, keywords_b, keywords_c, keywords_d, keywords_dynamic, slug)
+
+  # if titles project
+  if project.project_type == ProjectType.PLACEHOLDER:
+    titles = request.form['titles'].removesuffix('\r\n').split('\r\n')
+    websites[website_index].projects[project_index].update_as_titles(name, titles, slug)
+
 
   return render_template("project-details.html", project=project, w_index=website_index, p_index=project_index)
 

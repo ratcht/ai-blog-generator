@@ -68,12 +68,19 @@
         {% if project.project_type.value == 'By Placeholder' %}
         <div class="body-wrapper">
 
-          <label for="general-statement">General Statement:</label><br>
-          <input type="text" id="general-statement" form="create-project" name="general-statement"><br><br>
-          <label for="keywords">Fill-in-the-blank Words:</label><br>
+          <label for="title">General Title, include placeholder [a], [b], [c], or [d]:</label><br>
+          <input type="text" id="wordcount" name="title"><br><br>
+          <label for="prompt">General Prompt. Mark all placeholders with [a], [b], [c], [d]:</label><br>
+          <textarea id="prompt" name="prompt" form="create-project" placeholder="Enter the general prompt here..."></textarea><br><br>
 
-          <textarea id="fill-blank" name="fill-blank" form="create-project" placeholder="Enter fill-in-the-blank keywords here... (one per line)"></textarea><br><br>
-
+          <label for="prompt">Words to replace [a]:</label><br>
+          <textarea id="prompt" name="keywords-a" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          <label for="prompt">Words to replace [b]:</label><br>
+          <textarea id="prompt" name="keywords-b" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          <label for="prompt">Words to replace [c]:</label><br>
+          <textarea id="prompt" name="keywords-c" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          <label for="prompt">Words to replace [d]:</label><br>
+          <textarea id="prompt" name="keywords-d" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
           <label for="keywords">Focus Keywords:</label><br>
           <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
           

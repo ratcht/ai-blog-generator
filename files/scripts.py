@@ -46,6 +46,31 @@ class Project:
     self.min_word_count=min_word_count
     self.slug = slug
   
+
+  def update_as_keywords(self, name,general_statement, fill_blanks, keywords_dynamic, slug):
+    self.name=name
+    self.slug=slug
+    self.general_statement=general_statement
+    self.fill_blanks=fill_blanks
+    self.keywords_dynamic=keywords_dynamic
+
+
+  def update_as_titles(self,name, titles, slug):
+    self.name=name
+    self.slug=slug
+    self.titles = titles
+
+  def update_as_placeholders(self, name, general_prompt, general_title, keywords_a, keywords_b, keywords_c, keywords_d, keywords_dynamic, slug):
+    self.name=name
+    self.slug=slug
+    self.general_prompt=general_prompt
+    self.general_title=general_title
+    self.keywords_a=keywords_a
+    self.keywords_b=keywords_b
+    self.keywords_c=keywords_c
+    self.keywords_d=keywords_d
+    self.keywords_dynamic=keywords_dynamic
+
   def create_post_by_title(self, title):
     self.blog_text = generate_text_by_title(title, self.language.value, self.min_word_count)
 
