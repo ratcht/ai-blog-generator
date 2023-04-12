@@ -236,13 +236,18 @@ def add_project_placeholder():
   return redirect(url_for('website', index=website_index))
 
 
-@app.route("/websites/projects", methods=["GET"])
+@app.route("/websites/projects", methods=["GET", "POST"])
 def project_details():
   global websites
   website_index=int(request.args.get('w_index'))
   project_index=int(request.args.get('p_index'))
   project = websites[website_index].projects[project_index]
-  return render_template("project-details.html", project=project)
+  if request.method == "GET":
+    return render_template("project-details.html", project=project, w_index=website_index, p_index=project_index)
+  
+  print(request.form['keywords'].removesuffix('\r\n').split('\r\n'))
+
+  return render_template("project-details.html", project=project, w_index=website_index, p_index=project_index)
 
 if __name__ == "__main__":
   # webbrowser.open('http://127.0.0.1:8000')  # Go to example.com
