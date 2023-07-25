@@ -58,9 +58,10 @@
         <div class="body-wrapper">
           
           <label for="titles">Titles:</label><br>
-          <textarea id="titles" name="titles" form="create-project" placeholder="Enter Titles here... (one per line)"></textarea>
+          <textarea id="titles" name="titles" form="create-project" placeholder="Enter Titles here... (one per line)">{% for title in project.titles %}{{title}}
+{% endfor %}</textarea>
           <div" class="button-wrapper">
-            <button form="create-project" type="submit" class="generate-button">Add Project!</button>
+            <button form="create-project" type="submit" class="generate-button">Update Project!</button>
           </div>
         </div>
         {% endif %}
@@ -69,24 +70,29 @@
         <div class="body-wrapper">
 
           <label for="title">General Title, include placeholder [a], [b], [c], or [d]:</label><br>
-          <input type="text" id="wordcount" name="title"><br><br>
+          <input form="create-project" type="text" id="wordcount" name="title" value="{{project.general_title}}"><br><br>
           <label for="prompt">General Prompt. Mark all placeholders with [a], [b], [c], [d]:</label><br>
-          <textarea id="prompt" name="prompt" form="create-project" placeholder="Enter the general prompt here..."></textarea><br><br>
+          <textarea id="prompt" name="prompt" form="create-project" placeholder="Enter the general prompt here...">{{project.general_prompt}}</textarea><br><br>
 
           <label for="prompt">Words to replace [a]:</label><br>
-          <textarea id="prompt" name="keywords-a" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          <textarea id="prompt" name="keywords-a" form="create-project" placeholder="Enter keywords here... (one per line)">{% for keyword_a in project.keywords_a %}{{keyword_a}}
+{% endfor %}</textarea><br>
           <label for="prompt">Words to replace [b]:</label><br>
-          <textarea id="prompt" name="keywords-b" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          <textarea id="prompt" name="keywords-b" form="create-project" placeholder="Enter keywords here... (one per line)">{% for keyword_b in project.keywords_b %}{{keyword_b}}
+{% endfor %}</textarea><br>
           <label for="prompt">Words to replace [c]:</label><br>
-          <textarea id="prompt" name="keywords-c" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          <textarea id="prompt" name="keywords-c" form="create-project" placeholder="Enter keywords here... (one per line)">{% for keyword_c in project.keywords_c %}{{keyword_c}}
+{% endfor %}</textarea><br>
           <label for="prompt">Words to replace [d]:</label><br>
-          <textarea id="prompt" name="keywords-d" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          <textarea id="prompt" name="keywords-d" form="create-project" placeholder="Enter keywords here... (one per line)">{% for keyword_d in project.keywords_d %}{{keyword_d}}
+{% endfor %}</textarea><br>
           <label for="keywords">Focus Keywords:</label><br>
-          <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)"></textarea><br>
+          <textarea id="keywords" name="keywords" form="create-project" placeholder="Enter keywords here... (one per line)">{% for keyword in project.keywords_dynamic %}{{keyword}}
+{% endfor %}</textarea><br>
           
           
           <div" class="button-wrapper">
-            <button form="create-project" type="submit" class="generate-button">Add Project!</button>
+            <button form="create-project" type="submit" class="generate-button">Update Project!</button>
           </div>
         </div>
         {% endif %}

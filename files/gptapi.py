@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 import openai
 import re
 import os
@@ -23,7 +22,8 @@ def resource_path(relative_path):
 script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 rel_path = "files/api-key.txt"
 # abs_file_path = os.path.join(script_dir, rel_path)
-abs_file_path = resource_path(rel_path)
+abs_file_path = os.path.join(rel_path)
+
 
 with open(abs_file_path) as f:
   # authenticate openai
@@ -64,7 +64,7 @@ def generate_text_by_placeholder(general_prompt: str, placeholder_list: list, ke
   prompt = re.sub("\[c\]", placeholder_list[2], prompt)
   prompt = re.sub("\[d\]", placeholder_list[3], prompt)
 
-  gpt_result = generate_text(prompt+". This text must include the keyword(s) (but is not soley focused on):" +keywords+". The text must be in the language: "+language+". The text must be around the word count: "+str(min_word_count))
+  gpt_result = generate_text(prompt+". Include header titles for the body paragraphs, with 75%% of the headers being wrapped in <h2></h2> tags, and the other 25%% being wrapped in <h3></h3>. "+". This text must include the keyword(s) (but is not soley focused on):" +keywords+". The text must be in the language: "+language+". The text must be around the word count: "+str(min_word_count))
 
 
   return gpt_result
