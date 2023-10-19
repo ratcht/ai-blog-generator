@@ -12,7 +12,6 @@ To use with WordPress:
   * In WordPress, you must generate an Application Password
     This will be the password you input into the 'WordPress Password' field under /add/website
   * The username must be the username of an admin account to your wordpress site
-  * The website url must end with '/'
   
 To use Offline:
   Simply check the 'offline' checkbox and proceed normally
